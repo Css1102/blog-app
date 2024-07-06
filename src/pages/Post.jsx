@@ -7,21 +7,25 @@ import parse from 'html-react-parser'
 import { useSelector } from 'react-redux'
 function Post() {
   const[post,setPost]=useState(null)
-  const {slug}=useParams();
-  const navigate=useNavigate
+  const { slug }=useParams();
+  const navigate=useNavigate()
   const userData=useSelector((state)=>state.auth.userData)
   const isAuthor= (post && userData)? post.userId===userData.$id:false
 
 useEffect(()=>{
+if(slug){
 appwriteService.getPost(slug).then((post)=>{
 if(post){
 setPost(post)
 }
 else{
-navigate('./')
+navigate('/')
 }
 })
-  },[slug,navigate])
+}
+else{
+navigate('/')
+}},[slug,navigate])
 
   const deletePost=async()=>{
   const status=await appwriteService.deletePost(post.$id)
@@ -40,10 +44,10 @@ navigate('./')
        {isAuthor && (<div
        className='absolute-right-6 top-6'
        >
-      <Link to={`/EditPosts/${post.$id}`}>
+      <Link to={`/editposts/${post.$id}`}>
       <Button bgColor="bg-green-500" className='mr-3'>Edit</Button>
       </Link>
-      <Button bgColor="bg-green-500" onClick={deletePost}>Edit</Button>
+      <Button bgColor="bg-green-500" onClick={deletePost}>Delete</Button>
       </div>
        )}
     </div>

@@ -4,10 +4,10 @@ import appwriteService from '../appwrite/ConfigDb'
 import Container from '../components/container/Container'
 import PostForm from '../components/post-form/PostForm'
 function EditPosts() {
-const[post,usePost]=useState(null)
-const {slug}=useParams()
+const[post,setPost]=useState(null)
+const { slug }=useParams()
 const navigate=useNavigate()
-
+console.log(slug)
 useEffect(()=>{
 if(slug){
 appwriteService.getPost(slug).then((post)=>{
@@ -21,13 +21,13 @@ navigate('/')
 }
 },[slug,navigate])
 
-return (
+return  post?  (
 <div className="py-6">
 <Container>
 <PostForm post={post} />
 </Container>
 </div>
-)
+) :  null
 }
 
 export default EditPosts

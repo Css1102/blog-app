@@ -1,10 +1,10 @@
 import {Link,useNavigate} from 'react-router-dom'
-import AuthService from '../appwrite/Auth'
+import AuthServiceObj from '../appwrite/Auth'
 import Button from './Button'
 import React,{useState} from 'react'
 import Input from './Input'
 import Logo from './Logo'
-import { useForm} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import {login as authLogin} from '../store/authSlice'
 
@@ -15,21 +15,24 @@ export default function Login(){
     const {register,handleSubmit}=useForm()
     
     const login=async(data)=>{
+    console.log("logged in")
     setError("")
     try{
-    const session =await AuthService.login(data)
-    const userData=await AuthService.getCurrentUser();
+    const session =await AuthServiceObj.loginAccount(data)
+    if(session){
+    const userData=await AuthServiceObj.getCurrentUser();
     if(userData){
-    dispatch(authLogin({userData}))
+    dispatch(authLogin(userData))
     navigate("/")
     }
+}
     }
     catch(error){
     setError(error.message)
     }
     }
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex items-center justify-center w-full h-1/3">
     <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
         <div className="mb-2 flex justify-center">
             <span className="inline-block w-full max-w-[100px]">

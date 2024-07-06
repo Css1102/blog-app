@@ -1,32 +1,36 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 import { Client, Account, ID } from "appwrite";
 
 export class AuthService{
 client=new Client();
 account;
-constructor(email,password){
+constructor(){
 this.client.setEndpoint(conf.appwriteUrl).
-setProject(conf.appwriteProjectId)
+setProject(conf.appwriteProjectId);
+
 this.account=new Account(this.client)
 }
 
 async createAccount({email,password,name}){
 try{
-const userAccount=await this.account.create(ID.unique(),email,password,name)
+const userAccount=await this.account.create(ID.unique(),email,password,name);
+console.log(userAccount)
 if(userAccount){
-return this.loginAccount({email,password})
+return await this.loginAccount({email,password});
 }
 else{
-return userAccount
+return userAccount;
 }
 }
 catch(error){
+console.log(error)
 throw error
 }
 }
 async loginAccount({email,password}){
 try{
-return await this.account.createEmailPasswordSession(email,password);
+ return await this.account.createEmailPasswordSession(email,password);
+
 }
 catch(error){
 throw error
@@ -34,12 +38,12 @@ throw error
 }
 async getCurrentUser(){
 try{
-return await this.account.get()
+return await this.account.get();
 }
 catch(error){
-console.log("Appwrite servce :: getCurrentUser():: ",error)
+console.log("Appwrite servce :: getCurrentUser():: ",error);
 }
-return null
+return null;
 }
 async logout(){
 try{
@@ -61,5 +65,5 @@ catch(error){
 
 // const account = new Account(client);
 
-const AuthServiceObj=new AuthService()
+const AuthServiceObj=new AuthService();
 export default AuthServiceObj;

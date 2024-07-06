@@ -13,12 +13,15 @@ export default function PostForm({post}) {
   const {register,handleSubmit,watch,setValue,control,getValues}=useForm({
   defaultValues:{
   title:post?.title || "",
-  slug: post?.slug||"",
+  slug: post?.$id||"",
   content:post?.content||"",
   status:post?.status||"active",
-  }
+  },
   })
+  const Navigate=useNavigate()
+  const select=useSelector((state)=>state.auth.userData)
 const submit=async(data)=>{
+console.log(post)
 if(post){
 const file=data.image[0]?await appwriteService.uploadFile(data.image[0]):null
 if(file){
@@ -26,7 +29,7 @@ if(file){
 }
 const dbPost=await appwriteService.updatePosts(post.$id,{...data,featuredImage:file?file.$id:undefined})
 if(dbPost){
-Navigate(`/post/${dbPost.$id}`)
+Navigate(`/posts/${dbPost.$id}`)
 }
 }
 else{
@@ -34,13 +37,13 @@ const file =await appwriteService.uploadFile(data.image[0])
 if(file){
 const fileId=file.$id
 data.featuredImage=fileId
-const dbPost=await appwriteService.createPost({...data,userId:userData.$id})
+const dbPost=await appwriteService.createPost({...data,userId:select.$id})
 }
 if(dbPost){
-Navigate(`/post/${dbPost.$id}`)
+Navigate(`/posts/${dbPost.$id}`)
 }
-}
-}
+} 
+}  
 
 // the slugTransform method modifies the title value. It remove the spaces from it and converts it to
 // lower case. And it uses regex function to replace the spaces with _. It is wrapped in useCallback
@@ -48,19 +51,23 @@ Navigate(`/post/${dbPost.$id}`)
 const slugTransform=useCallback((value)=>{
   if(value && typeof(value)==="string"){return 
   value.trim().toLowerCase().replace(/[^a-zA-Z\d\s]+/g,"-").replace(/\s/g,"-")
+  return ""
   }},[])
 // The watch method is used to oversee a form input and also return it's value. We have used it als=ong
 // with the useEffect hook and passed it into the dependency array.
-  React.useEffect((value,{name})=>{
-  if(name==="title"){
-  setValue("slug",slugTransform(value.title),{shouldValidate:true})
-  }
-  },[watch,slugTransform,value])
+  React.useEffect(()=>{
+  const suscription=watch((value,{name})=>{
+    if(name==="title"){
+      setValue("slug",slugTransform(value.title),{shouldValidate:true})
+      }
+    })
+  return ()=>suscription.unsubscribe()
+  },[watch,slugTransform,setValue])
   return(
-  <form onClick={handleSubmit(Submit)}>
+  <form classNmae='flex flex-wrap' onSubmit={handleSubmit(submit)}>
     <div className='w-2/3 px-2'>
     <Input
-      label="title"
+      label="Title :"
       placeholder="title"
       className='mb-4'
       // In order to provide the input feild we destructure the register and pass the feild along with
@@ -69,10 +76,10 @@ const slugTransform=useCallback((value)=>{
       {...register("title",{required:true})}
     />
     <Input
-    label="slug"
+    label="Slug :"
       placeholder="slug"
       className='mb-4'
-      {...register("slug",{required:true})}
+      {...register("slug",{required:!true})}
       onInput={(e)=>setValue("slug",slugTransform(e.currentTarget.value),{shouldValidate:true})}
     />
     <RTE

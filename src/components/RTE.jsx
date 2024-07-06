@@ -2,7 +2,7 @@ import React from 'react'
 import {Controller} from 'react-hook-form'
 import {Editor} from '@tinymce/tinymce-react'
 function RTE(
-name,control,label,defaultValue=""
+{name,control,label,defaultValue=""}
 ) {
   return (
 <div className='w-full'>
@@ -17,12 +17,14 @@ name={name || "version"}
 // It is provided by the user to the controller.
 control={control}
 // render takes a callback as a parameter in which feild is passed with the value onChange
-render={({feild:{onChange}})=>(
+render={({field:{onChange}})=>(
   // The editor is provided by the tinyMCE editor which intake the following attributes.
   // some of these can be bought from the official documentation.
 <Editor
+apiKey='3w5v7jlulw02fgdl5v6l2eaqozyzflenzqhiiburygb8vjf2'
 initialValue={defaultValue}
 init={{
+initialValue:defaultValue,
 branding:false,
 height:500,
 menubar:true,

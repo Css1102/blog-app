@@ -1,4 +1,4 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 import { Client,Databases,Storage,Query,ID} from "appwrite";
 export class Service{
 client=new Client()
@@ -13,6 +13,7 @@ this.bucket=new Storage(this.client);
 
 async getPost(slug){
 try{
+console.log(slug)
 return await this.databases.getDocument(conf.appwriteDatabaseId, conf.appwriteCollectionId,slug)
 }
 catch(error){
@@ -21,9 +22,9 @@ return false;
 }
 }
 
-async getPosts(queries=Query.equal("status","active")){
+async getPosts(queries=[Query.equal("status","active")]){
 try{
-return await this.databases.getDocument(conf.appwriteDatabaseId,conf.appwriteCollectionId,[queries])
+return await this.databases.listDocuments(conf.appwriteDatabaseId,conf.appwriteCollectionId,queries)
 }
 catch(error){
 console.log("Appwrite error detected at :: getPosts",error)
@@ -33,6 +34,8 @@ return false;
 
 async createPost({title,content,slug,featuredImage,status,userId}){
 try{
+console.log(slug)
+console.log(userId)
 return await this.databases.createDocument(conf.appwriteDatabaseId,conf.appwriteCollectionId,slug,
 {title,content,featuredImage,status,userId})
 }
@@ -74,6 +77,7 @@ return false;
 async deleteFile(FileId){
 try{
 return await this.bucket.deleteFile(conf.appwriteBucketId,FileId)
+return true;
 }
 catch(error){
 console.log("Appwrite error detected at :: deleteFile",error)

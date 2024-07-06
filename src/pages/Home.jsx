@@ -20,7 +20,9 @@ function Home() {
     <div className="w-full py-8">
     <Container>
   <div className="flex flex-wrap">
+  <div className="p-2 w-full">
   <h1>Redirect to the login page.</h1>
+  </div>
   </div>
     </Container>
      </div>

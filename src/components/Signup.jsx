@@ -1,5 +1,5 @@
 import {Link,useNavigate} from 'react-router-dom'
-import AuthService from '../appwrite/Auth'
+import AuthServiceObj from '../appwrite/Auth'
 import Button from './Button'
 import React,{useState} from 'react'
 import Input from './Input'
@@ -14,15 +14,17 @@ const dispatch=useDispatch()
 const {register,handleSubmit}=useForm()
 
 const create=async(data)=>{
+console.log(data)
 setError("")
 try{
-const userData=await authService.createAccount(data)
+const userData=await AuthServiceObj.createAccount(data)
+console.log(userData)
 if(userData){
-const userData=await authService.getCurrentUser()
+const userData=await AuthServiceObj.getCurrentUser()
 if(userData){
-dispatch(login({userData}))
-}
+dispatch(login(userData))
 navigate("/")
+}
 }
 }
 catch(error){

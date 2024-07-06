@@ -1,8 +1,8 @@
 import React from 'react'
-
-function Logo({width='100%'}) {
+import blogimg from '../assets/blogimg.svg'
+function Logo({width='20%',height='10%'}) {
   return (
-    <img src="" style={{width}} alt="Logo img" />
+    <img src={blogimg} height={height} style={{width}} alt="Logo img" />
   )
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import { createBrowserRouter,RouterProvider } from 'react-router-dom'
+import { createBrowserRouter,createRoutesFromElements,RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
 import Home from './pages/Home.jsx'
@@ -23,7 +23,7 @@ children:[
   element:<Home/>
   },
 {
-path:'/Login',
+path:'/login',
 element:(
 <Protected authentication={false}>
 <Login/>
@@ -31,7 +31,7 @@ element:(
 )
 },
 {
-  path:'/SignUp',
+  path:'/signup',
   element:(
   <Protected authentication={false}>
   <SignUp/>
@@ -39,40 +39,48 @@ element:(
   )
   },
   {
-    path:'/AllPosts',
+    path:'/allposts',
     element:(
-    <Protected authentication={true}>
+    <Protected authentication>
     <AllPosts/>
     </Protected>
     )
     },
     {
-      path:'/AddPosts',
+      path:'/addposts',
       element:(
-      <Protected authentication={true}>
+      <Protected authentication>
       <AddPost/>
       </Protected>
       )
       },
       {
-        path:'/EditPosts/:slug',
+        path:'/editposts/:slug',
         element:(
-        <Protected authentication={true}>
+        <Protected authentication>
+        {" "}
         <EditPosts/>
         </Protected>
         )
         },
         {
-          path:'/Posts/:slug',
+          path:'/posts/:slug',
           element:(
           <Protected authentication={true}>
           <Post/>
           </Protected>
           )
-          },
+       },
 ],
 }
-])
+// createRoutesFromElements(
+// <Route path='/' element={<App/>}>
+// <Route path='/' element={<Home/>}/>
+// <Route path='/login' element={(<Protected authentication={false>}<Login/></Protected>)}/>
+// </Route>
+// 
+]
+)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

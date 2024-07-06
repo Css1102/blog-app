@@ -18,27 +18,27 @@ active:true,
 },
 {
     name:"Login",
-    slug:'/Login',
+    slug:'/login',
     active:!authStatus,
 },
 {
     name:"SignUp",
-    slug:'/SignUp',
+    slug:'/signup',
     active:!authStatus,
 },
 {
     name:"AllPosts",
-    slug:'/AllPosts',
+    slug:'/allposts',
     active:authStatus,
 },
 {
-    name:"AddPosts",
-    slug:'/AddPosts',
+    name:"AddPost",
+    slug:'/addposts',
     active:authStatus,
 },
  ]
   return (
-    <header className="py-3 shadow bg-gray-500">
+    <header className=" py-3 shadow bg-gray-500 ">
     <Container>
     <nav className='flex'>
     <div className='mr-4'>
