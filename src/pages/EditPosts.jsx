@@ -5,7 +5,7 @@ import Container from '../components/container/Container'
 import PostForm from '../components/post-form/PostForm'
 function EditPosts() {
 const[post,setPost]=useState(null)
-const { slug }=useParams()
+const {slug}=useParams()
 const navigate=useNavigate()
 console.log(slug)
 useEffect(()=>{

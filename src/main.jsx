@@ -66,7 +66,7 @@ element:(
         {
           path:'/posts/:slug',
           element:(
-          <Protected authentication={true}>
+          <Protected authentication>
           <Post/>
           </Protected>
           )
