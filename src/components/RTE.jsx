@@ -3,7 +3,7 @@ import { Controller } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
 function RTE({ name, control, label, defaultValue = "" }) {
   return (
-    <div className="w-full">
+    <div className="w-full h-2.5 z-10">
       {label && <label className="inline-block mb-1 pl-1">{label}</label>}
       {/* The controller is used to provide the control of external components to the react hook form.
        */}

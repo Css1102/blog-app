@@ -44,15 +44,13 @@ export default function PostForm({ post }) {
         data.featuredImage = fileId;
         const dbPost = await appwriteService.createPost({
           ...data,
-          userId: userData.$id
+          userId: userData?.$id
         });
         if(dbPost){
           Navigate(`/posts/${dbPost.$id}`);
         }
       }
-      // if(dbPost){
-      //   Navigate(`/posts/${dbPost.$id}`);
-      // }
+
     }
   };
 
@@ -61,13 +59,14 @@ export default function PostForm({ post }) {
   // to optimize the rendering.
   const slugTransform = useCallback((value) => {
     if (value && typeof value === "string") {
-      return;
-      value
+      return value
         .trim()
         .toLowerCase()
         .replace(/[^a-zA-Z\d\s]+/g, "-")
         .replace(/\s/g, "-");
-      return "";
+    }
+    else{
+    return ""
     }
   }, []);
   // The watch method is used to oversee a form input and also return it's value. We have used it als=ong
@@ -81,12 +80,12 @@ export default function PostForm({ post }) {
     return () => suscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
   return (
-    <form className="flex flex-col md:flex-row items-center md:items-start gap-24 justify-center rounded-xl p-2 sm:p-10 text-textColor min-h-[80vh] py-6 relative" onSubmit={handleSubmit(submit)}>
+    <form className="flex flex-col md:flex-row items-center md:items-start gap-24 justify-center rounded-xl p-2 sm:p-10 text-textColor py-6 relative bottom-10" onSubmit={handleSubmit(submit)}>
       <div className="w-2/3 px-2 text-start">
         <Input
           label="Title :"
           placeholder="title"
-          className="mb-4"
+          className="mb-4 mt-0.5"
           // In order to provide the input feild we destructure the register and pass the feild along with
           // the required object. This retrieves the given feild from the useForm hook and passes it to
           // the input.
@@ -97,11 +96,11 @@ export default function PostForm({ post }) {
           placeholder="slug"
           className="mb-4"
           {...register("slug", { required: !true })}
-          onInput={(e) =>
+          onInput={(e) =>{
             setValue("slug", slugTransform(e.currentTarget.value), {
               shouldValidate: true,
             })
-          }
+          }}
         />
         <RTE
           label="Content"

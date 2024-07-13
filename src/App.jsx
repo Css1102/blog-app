@@ -29,14 +29,14 @@ function App() {
   }, []);
 
   return !loading ? (
-    <div className="min-h-screen flex flex-wrap content-between bg-gray-400">
+    <div className="w-full min-h-screen flex flex-wrap content-between bg-cyan-900 m-0 p-0 box-border">
       <div className="w-full block">
         <Header />
-        <main>
+        <main className="h-screen bg-cyan-900">
           <Outlet />
         </main>
       </div>
-      <div className="w-full block h-[20%]">
+      <div className="w-full h-[10%] block relative top-20">
         <Footer />
       </div>
     </div>

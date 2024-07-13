@@ -1,8 +1,8 @@
 import React from 'react'
 import blogimg from '../assets/blogimg.svg'
-function Logo({width='20%',height='10%'}) {
+function Logo() {
   return (
-    <img src={blogimg} height={height} style={{width}} alt="Logo img" />
+    <img className='ml-0  h-[100%] w-[100%] ' src={blogimg} alt="Logo img" />
   )
 }
 
