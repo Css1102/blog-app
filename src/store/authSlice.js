@@ -12,7 +12,7 @@ initialState,
 reducers:{
 login:(state,action)=>{
  state.status=true,
- state.userData=action.payload
+ state.userData=action.payload.userData;
 },
 logout:(state,action)=>{
  state.status=false,
