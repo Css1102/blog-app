@@ -41,7 +41,7 @@ function Post() {
           <img
             src={appwriteService.getFilePreview(post.featuredImage)}
             alt={post.title}
-            className="rounded-xl h-[40%] w-[30%]"
+            className="rounded-xl h-[60%] w-[60%]"
           />
           {/* {isAuthor && (
             <div className="absolute-right-6 top-6 ml-3">
@@ -57,16 +57,16 @@ function Post() {
           )} */}
         </div>
         <div className="mb-6 w-full">
-          <h1 className="text-2xl font-bold">{post.title}</h1>
-          <div className="browser-css">
+          <h1 className="text-2xl font-bold mt-10">{post.title}</h1>
+          <div className="browser-css text-rose-600 mt-10 text-left">
             {/* The parse comes from the html react parser and it is used to convert the inline html components
     of the tinyMCE editor to jsx format in order to be rendered by react. */}
-            {parse(JSON.stringify(post.content))}
+            {parse((post.content))}
           </div>
           {isAuthor && (
             <div className="absolute-right-6 top-6 ml-3">
             <Link to={`/editposts/${post.$id}`}>
-                <Button bgColor="bg-green-500" className="mr-3 ml-3">
+                <Button bgColor="bg-green-500" className="mr-3 ml-3 ">
                   Edit
               </Button>
                </Link>

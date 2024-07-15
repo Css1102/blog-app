@@ -3,22 +3,22 @@ import { Link } from "react-router-dom";
 import Logo from "../Logo";
 function Footer() {
   return (
-    <section className="h-[10%] relative top-60 overflow-hidden py-10 bg-cyan-900 border border-t border-t-white mt-96">
-      <div className="relative z-10 mx-auto max-w-7xl px-4">
+    <section className=" relative top-60 overflow-hidden py-10 bg-cyan-900 border border-t border-t-white mt-96">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 max-h-[300px]">
         <div className="-m-6 flex flex-wrap">
           <div className="w-full p-6 md:w-1/2 lg:w-5/12">
             <div className="flex h-full flex-col justify-between">
-              <div className="mb-4 inline-flex items-center">
+              <div className="mb-4 inline-flex items-center mt-0 relative bottom-32">
                 <Logo width="50px" />
               </div>
               <div>
-                <p className="text-sm text-orange-200">
-                  &copy; Copyright 2023. All Rights Reserved by DevUI.
+                <p className="text-sm text-orange-200 mt-0 relative bottom-48">
+                  &copy; Copyright 2024. All Rights Reserved by DevUI.
                 </p>
               </div>
             </div>
           </div>
-          <div className="w-full p-6 md:w-1/2 lg:w-2/12 mt-40">
+          <div className="w-full p-6 md:w-1/2 lg:w-2/12 ">
             <div className="h-full">
               <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-orange-200">
                 Company
@@ -59,7 +59,7 @@ function Footer() {
               </ul>
             </div>
           </div>
-          <div className="w-full p-6 md:w-1/2 lg:w-2/12 mt-40">
+          <div className="w-full p-6 md:w-1/2 lg:w-2/12 ">
             <div className="h-full">
               <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-orange-200">
                 Support
@@ -100,7 +100,7 @@ function Footer() {
               </ul>
             </div>
           </div>
-          <div className="w-full p-6 md:w-1/2 lg:w-3/12 mt-40">
+          <div className="w-full p-6 md:w-1/2 lg:w-3/12 ">
             <div className="h-full">
               <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-orange-200">
                 Legals

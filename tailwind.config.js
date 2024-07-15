@@ -8,6 +8,7 @@ module.exports = {
     extend: {
     fontFamily:{
     'prec':["Bree Serif", 'serif'],
+    'playwrite':["Playwrite HR", 'cursive']
     }
     },
   },
