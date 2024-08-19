@@ -41,7 +41,7 @@ function Header() {
     <header className=" py-3 shadow bg-cyan-900 border border-b border-b-white">
       <Container>
         <nav className="flex flex-row justify-between">
-          <div className="max-h-10 relative right-96 ml-0">
+          <div className="max-h-10 relative right-92 ml-0">
             <Link to="/">
               <Logo />
             </Link>
