@@ -58,7 +58,7 @@ function Home() {
 
 
 </p>
-     <img className='h-[50%] w-[50%] object-cover mt-32 relative left-64' src="https://img1.hscicdn.com/image/upload/f_auto,t_ds_w_1280,q_70/lsci/db/PICTURES/CMS/136300/136346.jpg" alt="" />        
+     <img className='h-[50%] w-[50%] object-cover mt-32 relative left-64' src="https://img1.hscicdn.com/image/upload/f_auto,t_ds_w_1280,q_70/lsci/db/PICTURES/CMS/267600/267600.jpg" alt="" />        
           </div>
         </Container>
       </div>
