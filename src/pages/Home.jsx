@@ -46,11 +46,13 @@ function Home() {
               <h3 className='text-2xl font-prec text-rose-600 inline-block hover:text-primary shadow-md transition duration-200 cursor-pointer'><Link className='hover:text-black cursor-pointer drop-shadow-md'
               to='/login'>Login Here</Link></h3>
             </div>
-            <h3 className="text-3xl font-semibold relative left-[30%] font-playwrite text-slate-900 hover:text-primary transition duration-200 mt-20">ON THIS DAY:22/08/2011</h3>
-          <h4 className="mt-20 mr-10 text-xl font-medium text-slate-900 relative top-20 hover:text-primary transition duration-200">England 4, India 0
+            <h3 className="text-3xl font-semibold relative left-[30%] font-playwrite text-slate-900 hover:text-primary transition duration-200 mt-20">ON THIS DAY:29/08/2017</h3>
+          <h4 className="mt-20 mr-10 text-xl font-medium text-slate-900 relative top-20 right-16 hover:text-primary transition duration-200">Windies outfox England in their backyard
 
 </h4>
-          <p className='text-sm font-[400] text-left w-full flex flex-row-reverse relative top-24 ml-0 font-Roboto text-rose-600 '>England completed their first series whitewash in seven years when they won the Oval Test against India by an innings and eight runs. Ian Bell was India's chief tormentor, getting his first double-century in the course of a 350-run partnership with Kevin Pietersen. India made 300 for the first time in a series where the abjectness of their performance belied their No. 1 ranking, and that was solely due to an unbeaten century by Rahul Dravid, who carried his bat and came out again to open in the follow-on. When Sachin Tendulkar and Amit Mishra put on 144 on the last day, it looked like India might engineer an escape, but Tendulkar fell nine short of what would have been his 100th international hundred, after which five wickets were lost for 21 runs. Graeme Swann, who came late to the series party, took nine in the match.
+          <p className='text-sm font-[400] text-left w-full flex flex-row-reverse relative top-24 ml-0 font-Roboto text-rose-600 '>West Indies won their first Test in England in 17 years. Twenty-three-year-old Shai Hope was the driving force behind the five-wicket win at Headingley, steering the 322-run chase with his second hundred of the game (he became the first batter to make two hundreds in a match in all first-class cricket at the venue). His batting partner for a significant part of the chase, Kraigg Brathwaite, narrowly missed out on the same record when he was dismissed for 95 in the second innings. Some may have questioned England captain Joe Root's decision to set a sporting target, but it was their seven dropped catches (a total of 14 by both teams in the match) that hurt England the most.
+
+
 
 
 
