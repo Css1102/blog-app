@@ -20,8 +20,7 @@ function AllPosts() {
   return (
     <div className="w-full py-8">
       <Container>
-        {/* <div className="flex flex-wrap justify-start gap-2"> */}
-        <div className='grid grid-cols-4 gap-2 justify-start align-middle'>
+        <div className="flex flex-wrap justify-start items-center align-middle">
           {posts.map((post) => (
             <div className="p-2 w-1/4" key={post.$id}>
               <PostCard {...post} />
