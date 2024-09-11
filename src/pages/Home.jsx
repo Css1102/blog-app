@@ -47,7 +47,7 @@ function Home() {
               to='/login'>Login Here</Link></h3>
             </div>
             <h3 className="md:text-3xl text-base font-normal md:font-semibold relative md:left-[30%] font-playwrite text-slate-900 hover:text-primary transition duration-200 mt-20">ON THIS DAY:11/09/2023</h3>
-          <h4 className=" mt-5 text-sm font-normal md:left-32 left-[16px] md:top-20 md:ml-10 md:text-xl md:font-medium text-slate-900 relative hover:text-primary transition duration-200">Virat Kohli, KL Rahul and Kuldeep Yadav craft India's biggest win vs Pakistan
+          <h4 className=" mt-5 text-sm font-normal md:left-32 left-[16px] md:top-20 md:ml-10 xl:top-20 xl:mr-80 xl:ml-10  md:text-xl md:font-medium text-slate-900 relative hover:text-primary transition duration-200">Virat Kohli, KL Rahul and Kuldeep Yadav craft India's biggest win vs Pakistan
 
 
 
