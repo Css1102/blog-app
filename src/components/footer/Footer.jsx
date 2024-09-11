@@ -13,7 +13,7 @@ function Footer() {
               </div>
               <div>
                 <p className="text-sm text-orange-200 mt-0 relative bottom-48">
-                  &copy; Copyright 2024. All Rights Reserved by DevUI.
+                  &copy; Copyright 2024. All Rights Reserved by CssStudios.
                 </p>
               </div>
             </div>

@@ -14,7 +14,9 @@ function Post() {
 
   useEffect(() => {
     if (slug) {
-    console.log(slug)
+    // console.log(slug)
+    console.log(post)
+    console.log(isAuthor)
       appwriteService.getPost(slug).then((post) => {
         if (post) {
           setPost(post);
@@ -43,7 +45,7 @@ function Post() {
             alt={post.title}
             className="rounded-xl h-[60%] w-[60%]"
           />
-          {/* {isAuthor && (
+           {isAuthor && (
             <div className="absolute-right-6 top-6 ml-3">
               <Link to={`/editposts/${post.$id}`}>
                 <Button bgColor="bg-green-500" className="mr-3 ml-3">
@@ -54,7 +56,7 @@ function Post() {
                 Delete
               </Button>
             </div>
-          )} */}
+          )} 
         </div>
         <div className="mb-6 w-full">
           <h1 className="text-2xl font-bold mt-10">{post.title}</h1>
@@ -63,7 +65,7 @@ function Post() {
     of the tinyMCE editor to jsx format in order to be rendered by react. */}
             {parse((post.content))}
           </div>
-          {isAuthor && (
+          {/* {isAuthor && ( */}
             <div className="absolute-right-6 top-6 ml-3">
             <Link to={`/editposts/${post.$id}`}>
                 <Button bgColor="bg-green-500" className="mr-3 ml-3 ">
@@ -74,7 +76,7 @@ function Post() {
                 Delete
               </Button>
             </div>
-          )}
+          
         </div>
       </Container>
     </div>
