@@ -11,6 +11,7 @@ name:'auth',
 initialState,
 reducers:{
 login:(state,action)=>{
+console.log(state)
  state.status=true,
  state.userData=action.payload.userData;
 },

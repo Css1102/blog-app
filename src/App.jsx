@@ -29,10 +29,10 @@ function App() {
   }, []);
 
   return !loading ? (
-    <div className="w-full min-h-screen flex flex-wrap justify-evenly bg-cyan-900 ">
+    <div className="w-full min-h-screen flex flex-wrap justify-evenly bg-zinc-900 ">
       <div className="w-full block">
         <Header />
-        <main className="bg-cyan-900">
+        <main className="bg-zinc-900">
           <Outlet />
         </main>
       </div>

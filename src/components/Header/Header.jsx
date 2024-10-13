@@ -9,6 +9,7 @@ import AllPosts from "../../pages/AllPosts";
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  console.log(authStatus)
   const navigate = useNavigate();
   const navItems = [
     {
@@ -38,12 +39,14 @@ function Header() {
     },
   ];
   return (
-    <header className=" py-3 shadow bg-cyan-900 border border-b border-b-white">
+    <header className=" py-3 shadow bg-zinc-900 border border-b border-b-white">
       <Container>
         <nav className="flex flex-row justify-between">
           <div className="max-h-10 relative right-[390px] xl:right-[405px]">
             <Link to="/">
+            <div className="h-[70px] w-[100px] object-cover shadow-none blur-0 relative left-[360px] pb-8 ">
               <Logo />
+              </div>
             </Link>
           </div>
           <ul className="ml-auto flex">

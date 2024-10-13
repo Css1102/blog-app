@@ -59,7 +59,7 @@ function Post() {
           )} 
         </div>
         <div className="mb-6 w-full">
-          <h1 className="text-2xl font-bold mt-10">{post.title}</h1>
+          <h1 className="text-2xl font-bold mt-10 text-slate-200">{post.title}</h1>
           <div className="browser-css text-rose-600 mt-10 text-left">
             {/* The parse comes from the html react parser and it is used to convert the inline html components
     of the tinyMCE editor to jsx format in order to be rendered by react. */}
