@@ -11,6 +11,8 @@ import cricimg from '../assets/blogimg.svg'
 function Signup() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const[passerr,setPasserr]=useState(false)
+  const[mailerr,setMailerr]=useState(false)
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
@@ -37,8 +39,10 @@ function Signup() {
         className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[100px]">
-          <img src={cricimg} alt="" />
+        <span className="inline-block w-full max-w-[100px] mr-16 relative bottom-6 ">
+            {/* <Logo width="100%" /> */}
+            {/* <img src={cricimg} alt="" /> */}
+            <Logo/>
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight">

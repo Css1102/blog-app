@@ -16,7 +16,6 @@ export class Service {
     //   const replacementChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
     //   const pattern = /[$#!@^&*{}]/g;
-  
     //   let modSlug=slug.replace(pattern, function() {
     //     return replacementChars.charAt(Math.floor(Math.random() * replacementChars.length));
     // });
@@ -50,28 +49,28 @@ export class Service {
     }
   }
 
-  async createPost({ title,slug, content, featuredImage, status, userId }) {
+  async createPost({ title,slug, content, featuredImage, status, userId, Author,Publish_Date }) {
     try {
       console.log(slug);
-      console.log(userId);
+      console.log(Author);
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         ID.unique(),
-        { title, content, featuredImage, status, userId }
+        { title, content, featuredImage, status, userId,Author,Publish_Date }
       );
     } catch (error) {
       console.log("Appwrite  detected at :: getPosts", error);
       return false;
     }
   }
-  async updatePosts(slug, { title, featuredImage, content, status }) {
+  async updatePosts(slug, { title, featuredImage, content, status,Author,Publish_Date }) {
     try {
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug,
-        { title, featuredImage, content, status }
+        { title, featuredImage, content, status, Author,Publish_Date }
       );
     } catch (error) {
       console.log("Appwrite error detected at :: updatePosts", error);

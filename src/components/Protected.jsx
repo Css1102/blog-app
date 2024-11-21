@@ -13,7 +13,8 @@ function Protected({ children, authentication = true }) {
       navigate("/");
     }
     setLoader(false);
-  }, [authentication, authStatus, navigate]);
+  }, [authentication, navigate]);//authstatus htaya on 10 november 2024
   return loader ? <h1>Loading</h1> : <>{children}</>;
 }
 export default Protected;
+

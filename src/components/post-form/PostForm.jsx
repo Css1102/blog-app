@@ -5,12 +5,13 @@ import Input from "../Input";
 import RTE from "../RTE";
 import Select from "../Select";
 import appwriteService from "../../appwrite/ConfigDb";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import addToMap from '../../store/authSlice'
 export default function PostForm({ post }) {
   // We can manage the state of multiple parameters of a form using the useForm hook coming from
   // react-hook-form. it gives the following methods.
-  const { register, handleSubmit, watch, setValue, control, getValues } =
+  const { register, handleSubmit, watch, setValue, control, getValues,formState:{errors} } =
     useForm({
       defaultValues: {
         title: post?.title || "",
@@ -20,6 +21,7 @@ export default function PostForm({ post }) {
       },
     });
   const Navigate = useNavigate();
+  const dispatch=useDispatch()
   const userData = useSelector((state) => state.auth.userData);
   const submit = async (data) => {
     console.log(post);
@@ -37,6 +39,9 @@ export default function PostForm({ post }) {
       if (dbPost) {
         Navigate(`/posts/${dbPost.$id}`);
       }
+      // const reduceObj={id:post.$id,likes:Math.floor(Math.random()*100)+50}
+      // dispatch(addToMap(reduceObj))
+
     } else {
       const file = await appwriteService.uploadFile(data.image[0]);
       if (file) {
@@ -46,6 +51,8 @@ export default function PostForm({ post }) {
           ...data,
           userId: userData?.$id
         });
+        // const reduceObj={id:post.$id,likes:Math.floor(Math.random()*100)+50}
+        // dispatch(addToMap(reduceObj))
         if(dbPost){
           Navigate(`/posts/${dbPost.$id}`);
         }
@@ -85,12 +92,29 @@ export default function PostForm({ post }) {
         <Input
           label="Title :"
           placeholder="title"
-          className="mb-4 mt-0.5"
+          className="mb-2 mt-0.5"
           // In order to provide the input feild we destructure the register and pass the feild along with
           // the required object. This retrieves the given feild from the useForm hook and passes it to
           // the input.
           {...register("title", { required: true })}
         />
+        {errors.title && <span className="text-red-500 text-base font-medium ml-2 mt-0">tittle is required</span>}
+          <Input
+          label="Author:"
+          
+          placeholder="name"
+          className="mb-2 mt-0.5"
+          {...register("Author", { required: true })}
+        />
+                {errors.Author && <span className="text-red-500 text-base font-medium ml-2 mt-0">Author is required</span>}
+
+          <Input
+          label="Publish Date:"
+          placeholder="Date(DD-MM-YYYY)"
+          className="mb-2 mt-0.5"
+          {...register("Publish_Date", { required: true,minLength:10 })}
+        />
+          {errors.Publish_Date && <span className="text-red-500 text-base font-medium ml-2 mt-0">Date is required</span>}
         <Input
           label="Slug :"
           placeholder="slug"
@@ -113,10 +137,12 @@ export default function PostForm({ post }) {
         <Input
           label="Featured Image"
           type="file"
-          className="mb-4"
+          className="mb-2"
           accept="image/png,image/jpeg,image/jpg"
           {...register("image", { required: !post })}
         />
+        {errors.image && <span className="text-red-500 text-base font-medium ml-2 mt-0">image is required</span>}
+
         {post && (
           <div className="w-full mb-4">
             <img

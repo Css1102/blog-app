@@ -41,9 +41,9 @@ element:(
   {
     path:'/allposts',
     element:(
-    <Protected authentication>
+    // <Protected authentication>
     <AllPosts/>
-    </Protected>
+    // </Protected>
     )
     },
     {

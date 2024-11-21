@@ -6,7 +6,7 @@ import PostForm from '../components/post-form/PostForm'
 
 function AddPost() {
   return (
-  <div className="py-8 flex items-center justify-center overflow-visible">
+  <div className="mt-32 flex items-center justify-center overflow-visible">
   <Container>
   <PostForm/>
   </Container>
