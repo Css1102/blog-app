@@ -113,7 +113,7 @@ export class Service {
     }
   }
   getFilePreview(FileId) {
-    return this.bucket.getFilePreview(conf.appwriteBucketId, FileId);
+    return this.bucket.getFileView(conf.appwriteBucketId, FileId);
   }
 }
 const service = new Service();

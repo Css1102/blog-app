@@ -9,10 +9,11 @@ import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
 import Protected from './components/Protected.jsx'
 import SignUp from './pages/SignUp.jsx'
-import AllPosts from './pages/AllPosts.jsx'
 import AddPost from './pages/AddPost.jsx'
 import EditPosts from './pages/EditPosts.jsx'
 import Post from './pages/Post.jsx'
+import { lazy,Suspense } from 'react'
+const AllPosts=lazy(()=>import('./pages/AllPosts.jsx'))
 const route=createBrowserRouter([
 {
 path:'/',
@@ -41,9 +42,9 @@ element:(
   {
     path:'/allposts',
     element:(
-    // <Protected authentication>
-    <AllPosts/>
-    // </Protected>
+      <Suspense fallback={<div>Loading...</div>}>
+        <AllPosts />
+      </Suspense>
     )
     },
     {

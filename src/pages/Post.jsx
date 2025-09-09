@@ -86,12 +86,12 @@ function Post() {
           <img
             src={appwriteService.getFilePreview(post.featuredImage)}
             alt={post.title}
-            className="h-[400px] w-[700px] mt-4 rounded-xl"
+            className="h-[400px] w-[600px] mt-4 rounded-xl"
           />
        {/* {isAuthor && ( */}
           {/* )}  */}
         <div className="mb-6 w-full mt-8">
-          <div className="browser-css text-slate-500 text-left max-w-[764px] ml-60">
+          <div className="browser-css text-slate-500 text-left max-w-[764px] ml-[350px]">
             {/* The parse comes from the html react parser and it is used to convert the inline html components
     of the tinyMCE editor to jsx format in order to be rendered by react. */}
             {parse((post.content))}

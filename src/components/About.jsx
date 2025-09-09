@@ -20,9 +20,9 @@ const About = () => {
     </div>
     </div>
     <div className="mt-6 relative left-[620px] h-[20px] w-[300px] flex justify-between items-center">
-    <p className="text-base font-semibold text-gray-400 font-playwrite text-nowrap">Connect with me :</p>
+    <p className="text-base font-semibold text-gray-400 relative font-playwrite text-nowrap">Connect with me :</p>
     <div className="ml-2 flex justify-between items-center gap-4"></div>
-    <Link to='http://www.linkedin.com/in/sethisc'> <img src={linkedin} alt="" className='h-[30px] w-[30px]' /></Link>
+    <Link to='http://www.linkedin.com/in/sethisc'> <img src={linkedin} alt="" className='h-[30px] w-[35px]' /></Link>
     <img src={insta} alt="" className='h-[30px] w-[30px]' />
     <img src={twitter} alt="" className='h-[30px] w-[30px]' />
     <img src={telegram} alt="" className='h-[30px] w-[30px]' />

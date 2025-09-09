@@ -10,13 +10,13 @@ function AllPosts() {
   const [posts, setPosts] = useState([]);
   const[pageno,setPageno]=useState(1)
   const total_page=10;
-  const[loading,setLoading]=useState(false)
-const postperpg=7  //Thala for a reason.
+  const[loading,setLoading]=useState(true)
+const postperpg=10  //Thala for a reason.
 const[postsOnpage,setPostsOnpage]=useState([])
   async function getPostdata(){
     try{
-      setLoading(true)
       const posts=await appwriteService.getPosts([])
+            setLoading(true)
     // appwriteService.getPosts([]).then((posts) => {
       if (posts) {
         // console.log(posts)
@@ -59,36 +59,33 @@ const[postsOnpage,setPostsOnpage]=useState([])
   
 // const firstPostIndex=
   return (
-    // <div className="w-full py-8">
-    //   <Container>
-    //     <div className="flex flex-wrap justify-start items-center align-middle ml-0">
-    //       {posts.map((post) => (
-    //         <div className="p-2 w-1/4" key={post.$id}>
-              // <PostCard {...post} />
-    //         </div>
-    //       ))}
-    //     </div>
-    //   </Container>
-    // </div>
-    <div className="h-screen">
+    <div className="min-h-screen">
+    {loading ? (
+      <div className="flex justify-center items-center h-full">
+        <div className="text-lg font-medium text-slate-700">Loading posts...</div>
+      </div>
+    ):(
+      <>
     <div className="flex w-[100%] justify-evenly items-start h-[80%] mt-32">
     <div>
     {postsOnpage.length>0 && <PostPage limitposts={postsOnpage}/>}
     </div>
-    <div className="h-[100%] relative right-52 mt-4">
+    <div className="h-[100%] relative right-16 mt-4">
     <div className="bg-blue-400 text-black w-[250px] h-[250px]">
     <h2 className="text-xl font-bold ml-4 pt-4">Writing on Roc8?</h2>
     <ul className="list-none mt-16  ml-1.5">
     <li className="text-base font-medium mb-1.5">FAQs about writing</li>
     <li className="text-base font-medium mb-1.5">Guidlines to be followed</li>
     </ul>
-    <Link to='/addposts'><button className="rounded-lg mt-4 ml-4 h-[40px] w-[95px] px-2 py-1 bg-black text-white text-sm">Start writing</button></Link>
+    <Link to='/addposts'><button className="rounded-lg mt-4 ml-4 h-[40px] w-[115px] px-2 py-1 bg-black text-white text-sm">Start writing</button></Link>
     </div>
     </div>
     </div>
     <Pagination postsOnpage={postsOnpage} postsTotal={posts.length} postperpg={postperpg} handlePageNoDec={handlePageNoDec} handlePageNoInc={handlePageNoInc} pageno={pageno}/>
+    </>)}
     </div>
   );
+
 }
 
 export default AllPosts;

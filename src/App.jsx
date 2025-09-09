@@ -33,7 +33,7 @@ function App() {
       <div className="w-full">
         <Header />
         </div>
-        <div className="h-[1900px] w-full bg-lime-200">
+        <div className="min-h-screen w-full bg-lime-200">
         <main>
           <Outlet />
         </main>

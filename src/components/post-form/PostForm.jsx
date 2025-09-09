@@ -87,7 +87,7 @@ export default function PostForm({ post }) {
     return () => suscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
   return (
-    <form className="flex flex-col md:flex-row items-center md:items-start gap-24 justify-center rounded-xl p-2 sm:p-10 text-textColor py-6 relative bottom-10" onSubmit={handleSubmit(submit)}>
+    <form className="flex flex-col md:flex-row min-h-screen items-center md:items-start gap-24 justify-center rounded-xl p-2 sm:p-10 text-textColor py-6 relative bottom-10" onSubmit={handleSubmit(submit)}>
       <div className="w-2/3 px-2 text-start">
         <Input
           label="Title :"
