@@ -43,35 +43,6 @@ console.log("api not found"+e)
   useEffect(()=>{
     getIPOdata()
   },[])
-// return (
-//   <div className="w-full min-h-screen bg-lime-100 px-4 md:px-12 pt-40 pb-16">
-//     <div className="text-center">
-//       <h1 className="font-sora text-4xl md:text-5xl font-bold text-green-800 mb-4">
-//         Compounding your Cash
-//       </h1>
-//       <p className="text-lg md:text-2xl font-sora font-light text-green-900 max-w-3xl mx-auto">
-//         By strategies and market insights which guarantee up to 50% Return on Investment
-//       </p>
-//     </div>
-
-//     <div className="flex justify-center mt-12">
-//       <img
-//         src="https://www.finology.in/image/hero.svg"
-//         alt="Hero"
-//         className="w-full max-w-3xl object-contain rounded-lg shadow-md"
-//       />
-//     </div>
-
-//     <h3 className="text-green-700 font-semibold mt-20 mb-10 text-center text-2xl md:text-3xl">
-//       What We Offer
-//     </h3>
-
-//     <div className="max-w-6xl mx-auto">
-//       <Services />
-//       <About />
-//     </div>
-//   </div>
-// );
 
 return (
   <div className="w-full min-h-screen bg-lime-100 px-4 sm:px-6 md:px-12 pt-32 md:pt-40 pb-16">

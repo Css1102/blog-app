@@ -11,25 +11,27 @@ import cricimg from '../assets/blogimg.svg'
 function Signup() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const[passerr,setPasserr]=useState(false)
-  const[mailerr,setMailerr]=useState(false)
+  const[isError,setIsError]=useState(false)
+  const[msg,setMsg]=useState("")
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
   const create = async (data) => {
     console.log(data);
     setError("");
+    setMsg("")
     try {
       const userData = await AuthServiceObj.createAccount(data);
       console.log(userData);
-      if (userData) {
-        const userData = await AuthServiceObj.getCurrentUser();
         if (userData) {
-          dispatch(login(userData));
-          navigate("/");
+          setIsError(false)
+          console.log(userData.message)
+          setMsg(userData?.message)
+
+          navigate("/login");
         }
-      }
     } catch (error) {
+      setIsError(true)
       setError(error.message);
     }
   };
@@ -57,7 +59,10 @@ function Signup() {
             Sign In
           </Link>
         </p>
-        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+{isError
+  ? error && <p className="text-red-600 mt-8 text-center">{error}</p>
+  : msg && <p className="text-green-600 mt-8 text-center">{msg}</p>
+}
         <form onSubmit={handleSubmit(create)} className="mt-8">
           <div className="space-y-5">
             <Input

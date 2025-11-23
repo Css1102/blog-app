@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback,useEffect,useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../Button";
 import Input from "../Input";
@@ -7,6 +7,7 @@ import Select from "../Select";
 import appwriteService from "../../appwrite/ConfigDb";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { classifyTag } from "../../Tag_generator/Tags";
 // import addToMap from '../../store/authSlice'
 export default function PostForm({ post }) {
   // We can manage the state of multiple parameters of a form using the useForm hook coming from
@@ -22,9 +23,21 @@ export default function PostForm({ post }) {
     });
   const Navigate = useNavigate();
   const dispatch=useDispatch()
+  const isPost=post?true:false;
+
   const userData = useSelector((state) => state.auth.userData);
+  const userId=userData.$id===undefined ? userData.userData.$id:userData.$id;
+  const[canPost,setCanPost]=useState(false)
+  const[canPostStatus,setCanPostStatus]=useState(false)
+  const handleHover=()=>{
+  setHovered(true)
+  }
+
+  const handleHover_2=()=>{
+  setHovered(false)
+  }
   const submit = async (data) => {
-    console.log(post);
+    console.log(data);
     if (post) {
       const file = data.image[0]
         ? await appwriteService.uploadFile(data.image[0])
@@ -32,8 +45,10 @@ export default function PostForm({ post }) {
       if (file) {
         appwriteService.deleteFile(post.featuredImage);
       }
+      const attachedTagUpdated=await classifyTag(post.content)
       const dbPost = await appwriteService.updatePosts(post.$id, {
         ...data,
+        attachedTag:attachedTagUpdated,
         featuredImage: file ? file.$id : undefined
       });
       if (dbPost) {
@@ -47,9 +62,12 @@ export default function PostForm({ post }) {
       if (file) {
         const fileId = file.$id;
         data.featuredImage = fileId;
+        console.log(userData)
+        const attachedTag=await classifyTag(data?.content)
         const dbPost = await appwriteService.createPost({
           ...data,
-          userId: userData?.$id
+          attachedTag,
+          userId: userId
         });
         // const reduceObj={id:post.$id,likes:Math.floor(Math.random()*100)+50}
         // dispatch(addToMap(reduceObj))
@@ -76,6 +94,16 @@ export default function PostForm({ post }) {
     return ""
     }
   }, []);
+
+  useEffect(()=>{
+  const checkCanPost=async()=>{
+  const createPost=await appwriteService.canUserCreatePost({userId});
+  setCanPost(createPost)
+  setCanPostStatus(true)
+  }
+
+  checkCanPost()
+  },[post])
   // The watch method is used to oversee a form input and also return it's value. We have used it als=ong
   // with the useEffect hook and passed it into the dependency array.
   React.useEffect(() => {
@@ -158,13 +186,26 @@ export default function PostForm({ post }) {
           className="mb-4"
           {...register("status", { required: true })}
         />
+        <div className="flex flex-col gap-2">
         <Button
           type="submit"
           className="w-full cursor-pointer rounded-2xl bg-[rgb(78,51,235)]"
           bgColor={post ? "bg-green-500" : "bg-gray"}
+          disabled={!canPost}
+          isUpdateMode={isPost}
         >
           {post ? "Update" : "Submit"}
         </Button>
+  {!canPost  && !post &&  canPostStatus && (
+  <div className="mt-2 flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-300 rounded-xl px-3 py-2 w-full">
+    <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M12 5a7 7 0 100 14 7 7 0 000-14z" />
+    </svg>
+    <span>
+      You need at least one post with <strong>2+ upvotes</strong> to create another post.
+    </span>
+  </div>
+)}   </div>
       </div>
     </form>
   );

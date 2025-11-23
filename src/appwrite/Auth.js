@@ -1,6 +1,6 @@
 import conf from "../conf/conf.js";
-import { Client, Account, ID } from "appwrite";
-
+import { Client, Account, ID, Databases,Permission, Role,Query} from "appwrite";
+import crypto from "crypto";
 export class AuthService {
   client = new Client();
   account;
@@ -8,10 +8,19 @@ export class AuthService {
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
-
-    this.account = new Account(this.client);
+        this.account = new Account(this.client);
+    this.databases=new Databases(this.client)
   }
 
+  async createJWT() {
+  try {
+    const jwt = await this.account.createJWT();
+    return jwt; 
+  } catch (error) {
+    console.error("JWT creation failed:", error);
+    throw error;
+  }
+}
   async createAccount({ email, password, name }) {
     try {
       const userAccount = await this.account.create(
@@ -21,31 +30,62 @@ export class AuthService {
         name
       );
       console.log(userAccount);
-      if (userAccount) {
-        return await this.loginAccount({ email, password });
-      } else {
-        return userAccount;
-      }
-    } catch (error) {
+      await this.databases.createDocument(
+      conf.appwriteDatabaseId,
+      conf.appwriteCollection_one_Id,
+      ID.unique(),
+      {username:name,email:email,userId:userAccount.$id},
+  //       [
+  //   Permission.read(Role.user(userAccount.$id)),
+  //   Permission.write(Role.user(userAccount.$id))
+  // ]
+      )
+if (userAccount) {
+  return { success: true, message: "Account created. Please log in." };
+} 
+   } catch (error) {
       console.log(error);
       throw error;
     }
   }
   async loginAccount({ email, password }) {
-    try {
-      return await this.account.createEmailPasswordSession(email, password);
-    } catch (error) {
+    try  {
+      const session = await this.account.createEmailPasswordSession(email, password);
+    const userAccount=await this.account.get()
+    console.log(userAccount)
+    const userDocs = await this.databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteCollection_one_Id, [
+      Query.equal("userId", userAccount.$id),
+    ]);
+
+    if (userDocs.total === 0) {
+      throw new Error("User not found in database");
+
+    }  
+
+      return {
+      session,
+      user: userDocs.documents[0],
+    };
+  }catch (error) {
       throw error;
     }
   }
   async getCurrentUser() {
-    try {
-      return await this.account.get();
-    } catch (error) {
-      console.log("Appwrite servce :: getCurrentUser():: ", error);
-    }
+  try {
+      const session = await this.account.getSession("current");
+    if (!session) return null;
+    const account = await this.account.get();
+    console.log(account)
+    const userDocs = await this.databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteCollection_one_Id, [
+      Query.equal("userId", account.$id),
+    ]);
+    if (userDocs.total === 0) return null;
+    return userDocs.documents[0]; 
+  } catch (err) {
+    console.error("Session restore failed:", err);
     return null;
   }
+}
   async logout() {
     try {
       return await this.account.deleteSessions();

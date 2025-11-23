@@ -1,12 +1,10 @@
 import React from 'react'
 import PostCard from './PostCard'
 const PostPage = ({limitposts}) => {
-     console.log(limitposts)
   return (
-    <div className="flex flex-col w-[60%] h-[100%] justify-start items-end ml-36">
-     
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
     {limitposts?.map((post)=>(
-      <div key={post.$id}  className='relative right-10 mt-4'>
+      <div key={post.$id}  className=' mt-4'>
       <PostCard{...post}/>
       </div>
     ))

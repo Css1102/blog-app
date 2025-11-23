@@ -7,21 +7,18 @@ import Logo from "./Logo";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../store/authSlice";
-import cricimg from '../assets/blogimg.svg'
-
 export default function Login() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
-
   const login = async (data) => {
-    console.log("logged in");
     setError("");
     try {
-      const session = await AuthServiceObj.loginAccount(data);
-      if (session) {
-        const userData = await AuthServiceObj.getCurrentUser();
+      const response = await AuthServiceObj.loginAccount(data);
+      if (response?.session) {
+        const userData = await response?.user
+        console.log(userData)
         if (userData) {
           dispatch(authLogin(userData));
           navigate("/allposts")
@@ -72,7 +69,7 @@ export default function Login() {
               placeholder="Password"
               {...register("password", { required: true })}
             />
-            <Button type="submit" className="w-full">
+            <Button type="submit" disabled={false} className="w-full">
               Sign in{" "}
             </Button>
           </div>

@@ -1,17 +1,28 @@
-import React,{useEffect,useState} from "react";
+import React,{useEffect,useState,useRef} from "react";
 import { Link } from "react-router-dom";
 import appwriteService from "../appwrite/ConfigDb.js";
-import eye_img from '../assets/eye.png'
-import thumb_img from '../assets/thumbs-up.png'
 import { useSelector } from "react-redux";
-function PostCard({ $id, title, featuredImage,Author,Publish_Date }) {
-  let[count,setCount]=useState(105);
-  const stateLike=useSelector((state)=>state.auth?.likeCount)
-const handleInc=()=>{
-  console.log("Inside handle function")
-   console.log(count)
-setCount(count+1)
-}
+import { ArrowBigUp } from "lucide-react";
+import { MoreHorizontal } from 'lucide-react'
+function PostCard({ $id, title, featuredImage,Author,Publish_Date,Upvotes,tag }) {
+  const[userHasUpvoted,setUserHasUpvoted]=useState(false)
+    const userData = useSelector((state) => state.auth.userData);
+    const userId=userData.$id===undefined ? userData.userData.$id:userData.$id;
+    const userName=userData?.username===undefined ? userData?.userData?.username:userData?.username;
+
+    const menuRef=useRef(null);
+  const[threedotClick,setThreedotclick]=useState(false)
+  useEffect(()=>{
+  const checkUserupvoted=async()=>{
+  const hasUserUpvoted=await appwriteService.upvoteSlug({userId,postId:$id})
+  setUserHasUpvoted(hasUserUpvoted)
+  }
+  checkUserupvoted()
+  },[])
+
+  const handlesetThreedotclick=()=>{
+    setThreedotclick((prev)=>!prev)
+    }
   let month=undefined;
   const getDate=(str)=>{
   if(str==="01"){
@@ -54,41 +65,102 @@ setCount(count+1)
 
     return month;
   }
-
-  // useEffect(()=>{
-  // getDate();
-  // },[])
-  return (
-    <Link to={`/posts/${$id}`}>
-      <div className="w-[1020px] bg-white max-h-[200px] flex justify-evenly items-center">
-      <div className="w-[850px] h-[100%]">
-      <p className="text-base font-extralight text-slate-800 ml-48 mt-2">{Author}</p>
-      <p className="text-xl max-h-[70px] text-left font-bold mt-6 text-slate-900 w-full ml-[240px]">{title}</p>
-      {console.log(Publish_Date?.substring(0,2))}
-      <div className="flex justify-between item-center w-[100px] h-[20px] mt-10 ml-60">
-      {/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 64 64">
-      <path fill="#FFC017" d="m39.637 40.831-5.771 15.871a1.99 1.99 0 0 1-3.732 0l-5.771-15.87a2.02 2.02 0 0 0-1.194-1.195L7.298 33.866a1.99 1.99 0 0 1 0-3.732l15.87-5.771a2.02 2.02 0 0 0 1.195-1.194l5.771-15.871a1.99 1.99 0 0 1 3.732 0l5.771 15.87a2.02 2.02 0 0 0 1.194 1.195l15.871 
-      5.771a1.99 1.99 0 0 1 0 3.732l-15.87 
-      5.771a2.02 2.02 0 0 0-1.195 1.194"></path>
-      </svg> */}
-      <p className="text-base font-extralight text-slate-800 text-nowrap mr-1.5">{getDate(Publish_Date?.substring(3,5))+" " + Publish_Date?.substring(0,2)+ ", "+Publish_Date?.substring(6)}</p>
-    <img src={eye_img} alt="" className="mr-2 ml-2" />
-<button onClick={handleInc} className="text-base font-extralight text-slate-800">{count}</button>
-<img src={thumb_img} alt="" className="ml-4 mr-2" />
-<p className="text-base font-extralight text-slate-800">{stateLike}</p>
-      </div>
-      </div>
-      <div className="w-[400px] relative left-80">
-          <img
-            src={appwriteService.getFilePreview(featuredImage)}
-            alt={title}
-            className="h-[120px] w-[400px]"
-          />
-   </div>
-   <hr className="mt-60 w-[730px] bg-slate-600" />
-      </div>
-    </Link>
-  );
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      menuRef.current &&
+      event.target instanceof Node &&
+      !menuRef.current.contains(event.target)
+    ) {
+      setThreedotclick(false);
+    }
+  };
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);    
+  const handleDelete = async () => {
+    const confm=confirm("Are you sure you want to delete the post")
+    if(confm){
+    const status = await appwriteService.deletePost(post.$id);
+    if (status) {
+      await appwriteService.deleteFile(post.featuredImage);
+      navigate("/");
+    }
+  }
 }
+
+return (
+  <div className="bg-white rounded-xl shadow-md p-4 ml-4 mt-20 flex flex-col justify-between h-full transition-transform hover:scale-[1.02] hover:shadow-lg relative">
+    {/* Image */}
+    <Link to={`/posts/${$id}`}>
+    <div className="w-[400px] mx-2 h-52 overflow-auto rounded-md">
+      <img
+        src={appwriteService.getFilePreview(featuredImage)}
+        alt={title}
+        className="w-full h-full object-cover"
+      />
+    </div>
+    </Link>
+    <button className='absolute 
+    top-1 right-2        
+    sm:top-2 sm:right-3  
+    md:top-3 md:right-4  
+    lg:top-0 lg:right-[10px] 
+    px-3 py-1
+    rounded-full
+    bg-gradient-to-r from-indigo-600 to-purple-600
+    text-white text-xs font-semibold
+    shadow-md
+    hover:shadow-lg hover:scale-105
+    transition-all duration-200 ease-in-out2'>
+    {tag}
+    </button>
+
+    <div className='relative'>
+    <p className="text-sm text-slate-600 mt-3">{Author}</p>
+
+     <div ref={menuRef}>
+    {Author.replace(" ","").toLowerCase()===userName.replace(" ","").toLowerCase() && <div className="z-50" onClick={()=>handlesetThreedotclick()}>
+    <MoreHorizontal className="absolute right-2 top-3 text-slate-700"/>
+    </div>}
+       {threedotClick && (
+          <ul className="absolute top-0 right-0 w-32 rounded-lg shadow-lg bg-zinc-100 border border-slate-300 z-[100]">
+            <Link to={`/editposts/${$id}`}>
+            <li
+              className="px-4 py-2 text-slate-700 hover:bg-yellow-500 hover:text-white cursor-pointer transition-colors"
+            >
+              Update
+            </li>
+            </Link>
+            <li
+              className="px-4 py-2 text-slate-700 hover:bg-red-500 hover:text-white cursor-pointer transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("Delete clicked");
+                handleDelete();
+              }}
+            >
+              Delete
+            </li>
+          </ul>
+        )}
+    </div>
+
+    </div>
+        <Link to={`/posts/${$id}`}>
+    <h2 className="text-lg font-semibold text-slate-900 mt-2 line-clamp-2">{title}</h2>
+    <div className="flex items-center justify-between text-sm text-slate-500 mt-4">
+      <p>{getDate(Publish_Date?.substring(3, 5)) + " " + Publish_Date?.substring(0, 2) + ", " + Publish_Date?.substring(6)}</p>
+      <div className="flex items-center gap-2">
+       <ArrowBigUp className={`${userHasUpvoted?'text-orange-600':'text-slate-700}'}`}/>
+        <p>{Upvotes}</p>
+      </div>
+    </div>
+    </Link>
+  </div>
+  )}
+
 
 export default PostCard;

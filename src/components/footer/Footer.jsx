@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Logo from "../Logo";
 function Footer() {
   return (
-    <section className="overflow-hidden  py-10 bg-lime-400 border border-t border-t-white ">
+    <section className="overflow-hidden py-6 bg-lime-400 border border-t border-t-white ">
       <div className="relative z-10 mx-auto max-w-7xl px-4 max-h-[250px]">
         <div className="-m-6 flex flex-wrap">
           <div className="w-full p-6 md:w-1/2 lg:w-5/12">

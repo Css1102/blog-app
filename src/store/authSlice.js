@@ -14,8 +14,7 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialState={
     status:false,
     userData:null,
-    // MapObj:new Array()
-    likeCount:Math.floor(Math.random()*100)+50,
+    UpvotedObj:null,
 }
 
 const authSlice=createSlice({
@@ -23,19 +22,19 @@ name:'auth',
 initialState,
 reducers:{
 login:(state,action)=>{
-console.log(state)
+console.log(action.payload)
  state.status=true,
- state.userData=action.payload.userData;
+ state.userData=action.payload;
 },
 logout:(state,action)=>{
  state.status=false,
  state.userData=null
 },
-// addToMap:(state,action)=>{
-// console.log(action)
-// state.MapObj.push(action.reduceObj)
-// }
+upvoted:(state,action)=>{
+console.log(action.payload)
+state.UpvotedObj=action.payload
+},
 }
 })
 export default authSlice.reducer
-export const{ login,logout }=authSlice.actions
+export const{ login,logout,upvoted,setAuth }=authSlice.actions
