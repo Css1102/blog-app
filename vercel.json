@@ -1,8 +1,5 @@
 {
-    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "builds": [
-    { "src": "Dockerfile", "use": "@vercel/docker" }
-  ]
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
   
    
