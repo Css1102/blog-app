@@ -15,7 +15,7 @@ export class AuthService {
   async createJWT() {
   try {
     const jwt = await this.account.createJWT();
-    return jwt; 
+    return jwt.jwt; 
   } catch (error) {
     console.error("JWT creation failed:", error);
     throw error;
@@ -61,10 +61,11 @@ if (userAccount) {
       throw new Error("User not found in database");
 
     }  
-
+          const jwt = await this.createJWT();
       return {
       session,
       user: userDocs.documents[0],
+      jwt
     };
   }catch (error) {
       throw error;

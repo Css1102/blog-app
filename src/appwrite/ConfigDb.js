@@ -9,18 +9,18 @@ export class Service {
   constructor() {
     this.client
       .setEndpoint(conf.appwriteUrl)
-      .setProject(conf.appwriteProjectId);
+      .setProject(conf.appwriteProjectId)
     this.databases = new Databases(this.client);
     this.bucket = new Storage(this.client);
   }
    
-    //   const replacementChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-
-    //   const pattern = /[$#!@^&*{}]/g;
-    //   let modSlug=slug.replace(pattern, function() {
-    //     return replacementChars.charAt(Math.floor(Math.random() * replacementChars.length));
-    // });
-    //   console.log(modSlug)
+    setJWT(jwt) {
+    if (jwt) {
+      this.client.setJWT(jwt);
+      this.databases = new Databases(this.client);
+      this.bucket = new Storage(this.client);
+    }
+  }
 
 
   async getPost(slug) {
@@ -254,5 +254,5 @@ async downVote({postId,userId}){
   }
 
 }
-const service = new Service();
-export default service;
+const appwriteService=new Service()
+export default appwriteService

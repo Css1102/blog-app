@@ -1,6 +1,6 @@
 import React,{useEffect,useState,useRef} from "react";
 import { Link } from "react-router-dom";
-import appwriteService from "../appwrite/ConfigDb.js";
+import appwriteService from '../appwrite/ConfigDb.js'
 import { useSelector } from "react-redux";
 import { ArrowBigUp } from "lucide-react";
 import { MoreHorizontal } from 'lucide-react'
@@ -107,7 +107,7 @@ return (
     top-1 right-2        
     sm:top-2 sm:right-3  
     md:top-3 md:right-4  
-    lg:top-0 lg:right-[10px] 
+    lg:top-0 lg:right-6
     px-3 py-1
     rounded-full
     bg-gradient-to-r from-indigo-600 to-purple-600

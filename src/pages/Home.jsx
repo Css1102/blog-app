@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams,Link } from "react-router-dom";
-import appwriteService from "../appwrite/ConfigDb";
+import appwriteService from '../appwrite/ConfigDb.js'
 import Container from "../components/container/Container";
 import PostForm from "../components/post-form/PostForm";
 import PostCard from "../components/PostCard";
@@ -14,6 +14,13 @@ import iccimg from '../assets/png-transparent-women-s-cricket-world-cup-icc-test
 function Home() {
   const [posts, setPosts] = useState([]);
   const logoutChk=useSelector((state)=>state.auth.status)
+  const jwtFromState=useSelector((state)=>state.auth.jwt)
+
+  useEffect(()=>{
+  if(jwtFromState){
+  appwriteService.setJWT(jwtFromState)
+  }
+  },[])
   useEffect(() => {
     appwriteService.getPosts([]).then((posts) => {
       if (posts) {
@@ -45,33 +52,37 @@ console.log("api not found"+e)
   },[])
 
 return (
-  <div className="w-full min-h-screen bg-lime-100 px-4 sm:px-6 md:px-12 pt-32 md:pt-40 pb-16">
-    <div className="text-center">
-      <h1 className="font-sora text-3xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-4">
-        Compounding your Cash
-      </h1>
-      <p className="text-base sm:text-lg md:text-2xl font-sora font-light text-green-900 max-w-3xl mx-auto">
-        By strategies and market insights which guarantee up to 50% Return on Investment
-      </p>
-    </div>
-
-    <div className="flex justify-center mt-12">
-      <img
-        src="https://www.finology.in/image/hero.svg"
-        alt="Hero"
-        className="w-full max-w-3xl object-contain rounded-lg shadow-md"
-      />
-    </div>
-
-    <h3 className="text-green-700 font-semibold mt-16 md:mt-20 mb-8 md:mb-10 text-center text-xl sm:text-2xl md:text-3xl">
-      What We Offer
-    </h3>
-
-    <div className="max-w-6xl mx-auto">
-      <Services />
-      <About />
-    </div>
+<div className="w-full min-h-screen bg-lime-100 px-4 sm:px-6 md:px-12 pt-24 sm:pt-32 md:pt-40 pb-12 sm:pb-16">
+  {/* Hero Section */}
+  <div className="text-center px-2">
+    <h1 className="font-sora text-2xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-3 sm:mb-4">
+      Compounding your Cash
+    </h1>
+    <p className="text-sm sm:text-lg md:text-2xl font-sora font-light text-green-900 max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
+      By strategies and market insights which guarantee up to 50% Return on Investment
+    </p>
   </div>
+
+  {/* Hero Image */}
+  <div className="flex justify-center mt-8 sm:mt-12 px-2">
+    <img
+      src="https://www.finology.in/image/hero.svg"
+      alt="Hero"
+      className="w-full max-w-md sm:max-w-2xl md:max-w-3xl object-contain rounded-lg shadow-md"
+    />
+  </div>
+
+  {/* Section Title */}
+  <h3 className="text-green-700 font-semibold mt-12 sm:mt-16 md:mt-20 mb-6 sm:mb-8 md:mb-10 text-center text-lg sm:text-2xl md:text-3xl">
+    What We Offer
+  </h3>
+
+  {/* Services + About */}
+  <div className="max-w-6xl mx-auto px-2 sm:px-4">
+    <Services />
+    <About />
+  </div>
+</div>
 );
 
 }

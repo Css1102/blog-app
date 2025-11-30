@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import appwriteService from "../appwrite/ConfigDb";
+import appwriteService from '../appwrite/ConfigDb.js'
 import Container from "../components/container/Container";
 import PostForm from "../components/post-form/PostForm";
+import { useSelector } from "react-redux";
+
 
 function EditPosts() {
+  const jwtFromState=useSelector((state)=>state.auth.jwt)
   const [post, setPost] = useState(null);
   const {slug} = useParams();
   const navigate = useNavigate();
   console.log(slug);
+  useEffect(()=>{
+  if(jwtFromState){
+  appwriteService(jwtFromState)
+  }
+  },[jwtFromState])
   useEffect(() => {
     if (slug) {
       appwriteService.getPost(slug).then((post) => {

@@ -4,7 +4,7 @@ import Button from "../Button";
 import Input from "../Input";
 import RTE from "../RTE";
 import Select from "../Select";
-import appwriteService from "../../appwrite/ConfigDb";
+import  appwriteService from "../../appwrite/ConfigDb.js";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { classifyTag } from "../../Tag_generator/Tags";
@@ -26,6 +26,7 @@ export default function PostForm({ post }) {
   const isPost=post?true:false;
 
   const userData = useSelector((state) => state.auth.userData);
+  const jwtFromState=useSelector((state)=>state.auth.jwt)
   const userId=userData.$id===undefined ? userData.userData.$id:userData.$id;
   const[canPost,setCanPost]=useState(false)
   const[canPostStatus,setCanPostStatus]=useState(false)
@@ -36,6 +37,12 @@ export default function PostForm({ post }) {
   const handleHover_2=()=>{
   setHovered(false)
   }
+
+  React.useEffect(()=>{
+  if(jwtFromState){
+  appwriteService.setJWT(jwtFromState)
+  }
+  },[jwtFromState])
   const submit = async (data) => {
     console.log(data);
     if (post) {
