@@ -15,6 +15,7 @@
     "axios": "^1.7.7",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
+    "esbuild": "^0.17.19",
     "express": "^5.1.0",
     "html-react-parser": "^5.1.9",
     "localforage": "^1.10.0",
