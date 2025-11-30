@@ -4,7 +4,7 @@ FROM node:18
 RUN apt-get update && apt-get install -y libatomic1
 
 # Set working directory
-WORKDIR /app
+WORKDIR /src
 
 # Copy package files
 COPY package*.json ./
