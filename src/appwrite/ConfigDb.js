@@ -16,6 +16,7 @@ export class Service {
    
     setJWT(jwt) {
     if (jwt) {
+      console.log("verifying jwt")
       this.client.setJWT(jwt);
       this.databases = new Databases(this.client);
       this.bucket = new Storage(this.client);
