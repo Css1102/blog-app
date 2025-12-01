@@ -1,6 +1,7 @@
 import React, { useState, useEffect,useRef,useCallback } from "react";
 import { useNavigate, useParams,Link } from "react-router-dom";
 import appwriteService from '../appwrite/ConfigDb.js'
+import {jwtDecode} from "jwt-decode";
 import Container from "../components/container/Container";
 import PostForm from "../components/post-form/PostForm";
 import PostPage from "../components/PostPage";
@@ -34,12 +35,19 @@ function AllPosts() {
 const postperpg=9;
 const[postsOnpage,setPostsOnpage]=useState([])
 
-useEffect(()=>{
-if(jwtFromState){
-appwriteService.setJWT(jwtFromState);
-}
-},[jwtFromState])
-async function getPostdata() {
+useEffect(() => {
+  if (jwtFromState) {
+    const { exp } = jwtDecode(jwtFromState);
+    if (Date.now() >= exp * 1000) {
+      appwriteService.clearJWT();
+      dispatch(logout());
+      toast.error("Session expired, please log in again.");
+      navigate("/login");
+    } else {
+      appwriteService.setJWT(jwtFromState);
+    }
+  }
+}, [jwtFromState]);async function getPostdata() {
   try {
     setLoading(true);
     const posts = await appwriteService.getPosts(userId);
@@ -237,7 +245,15 @@ return (
 </div> ) :
  ( <> <div>
    <div className='flex mt-32 justify-between gap-4 items-center'> 
-    <div className="relative lg:left-64" ref={filterRef}> <button onClick={handleDropdown} className="w-32 h-12 rounded-full bg-white text-black flex justify-evenly items-center px-3 py-1 shadow-md" > <FilterIcon className={`w-4 h-4 ${activeFilter!==null && !reset?"fill-black":""}`} /> <span>Filter by</span> </button> {dropdownOpen && ( <ul className="absolute top-full left-0 mt-2 w-40 rounded-lg shadow-lg bg-white z-10"> <li onClick={()=>filterByUpvotes()} className={`px-3 py-2 border-b border-slate-300 cursor-pointer ${activeFilter==="upvotes"? "bg-indigo-100 font-semibold":"hover:bg-slate-100"}`}> Upvotes </li> <li onClick={filterByLatest} className={`px-3 py-2 border-b border-slate-300 cursor-pointer ${activeFilter==="latest"? "bg-indigo-100 font-semibold":"hover:bg-slate-100"}`}> Latest </li> <li className="relative px-3 py-2 hover:bg-slate-100 cursor-pointer flex items-center justify-between"> <span className='ml-12'>Tags</span> <ChevronRight onClick={handleTagOpen} className={`tag-toggle w-4 h-4 cursor-pointer ${tagListOpen?"rotate-90":""}`} /> {tagListOpen && ( <div ref={tagRef}> <ul className="absolute top-0 left-full ml-2 w-32 rounded-lg shadow-lg bg-white z-50"> {tagList.map((tag, idx) => ( <li key={idx} onClick={()=>filterByTagName(tag)} className={`px-3 py-2 border-b border-slate-300 ${ activeFilter === `tag-${tag}` ? "bg-indigo-100 font-semibold" : "hover:bg-slate-100"} cursor-pointer`} > {tag} </li> ))} </ul> </div> )} </li> <li onClick={handleReset} className={`relative px-3 py-2 ${reset && activeFilter===null?"bg-indigo-100 font-semibold":"hover:bg-slate-100"} cursor-pointer flex items-center justify-around`}> <ListRestart className="w-4 h-4"/> <span className="mr-10">Reset</span> </li> </ul> )} </div> <SearchBar onSearch={handleSearch}/> </div> <div className="pt-32 pb-20 min-h-[300px]" ref={bottomRef}> {postsOnpage.length > 0 ? ( <PostPage limitposts={postsOnpage} /> ) : ( <div className="text-center text-slate-500 text-lg font-medium py-10"> {activeFilter || !searchBarEmpty ? "No posts found for your selection." : "No posts available yet. Start by creating your first post!"} </div> )} </div> </div> </> )} {/* Always show pagination */}
+    <div className="relative lg:left-64" ref={filterRef}>
+       <button onClick={handleDropdown}
+        className="w-32 h-12 rounded-full bg-white text-black flex justify-evenly items-center px-3 py-1 shadow-md" > 
+        <FilterIcon className={`w-4 h-4 ${activeFilter!==null && !reset?"fill-black":""}`} /> 
+        <span>Filter by</span> </button> 
+        {dropdownOpen && ( <ul className="absolute top-full left-0 mt-2 w-40 rounded-lg shadow-lg bg-white z-10"> 
+          <li onClick={()=>filterByUpvotes()} className={`px-3 py-2 border-b border-slate-300 cursor-pointer
+            ${activeFilter==="upvotes"? "bg-indigo-100 font-semibold":"hover:bg-slate-100"}`}> Upvotes </li>
+             <li onClick={filterByLatest} className={`px-3 py-2 border-b border-slate-300 cursor-pointer ${activeFilter==="latest"? "bg-indigo-100 font-semibold":"hover:bg-slate-100"}`}> Latest </li> <li className="relative px-3 py-2 hover:bg-slate-100 cursor-pointer flex items-center justify-between"> <span className='ml-12'>Tags</span> <ChevronRight onClick={handleTagOpen} className={`tag-toggle w-4 h-4 cursor-pointer ${tagListOpen?"rotate-90":""}`} /> {tagListOpen && ( <div ref={tagRef}> <ul className="absolute top-0 left-full ml-2 w-32 rounded-lg shadow-lg bg-white z-50"> {tagList.map((tag, idx) => ( <li key={idx} onClick={()=>filterByTagName(tag)} className={`px-3 py-2 border-b border-slate-300 ${ activeFilter === `tag-${tag}` ? "bg-indigo-100 font-semibold" : "hover:bg-slate-100"} cursor-pointer`} > {tag} </li> ))} </ul> </div> )} </li> <li onClick={handleReset} className={`relative px-3 py-2 ${reset && activeFilter===null?"bg-indigo-100 font-semibold":"hover:bg-slate-100"} cursor-pointer flex items-center justify-around`}> <ListRestart className="w-4 h-4"/> <span className="mr-10">Reset</span> </li> </ul> )} </div> <SearchBar onSearch={handleSearch}/> </div> <div className="pt-32 pb-20 min-h-[300px]" ref={bottomRef}> {postsOnpage.length > 0 ? ( <PostPage limitposts={postsOnpage} /> ) : ( <div className="text-center text-slate-500 text-lg font-medium py-10"> {activeFilter || !searchBarEmpty ? "No posts found for your selection." : "No posts available yet. Start by creating your first post!"} </div> )} </div> </div> </> )} {/* Always show pagination */}
  {!loading && postsOnpage.length>0 && 
  <div className="my-8 flex justify-center"> 
  <Pagination postsOnpage={postsOnpage} 

@@ -10,7 +10,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { ArrowBigUp } from "lucide-react";
 import { Databases,Query,Client} from "appwrite";
 import { upvoted } from "../store/authSlice";
-
+import { jwtDecode } from "jwt-decode";
 import conf from '../conf/conf'
 function Post() {
  const[post,setPost]=useState(null)
@@ -29,12 +29,19 @@ function Post() {
     setProject(conf.appwriteProjectId)
   
 const database=new Databases(client)
-useEffect(()=>{
-if(jwtFromState){
-appwriteService.setJWT(jwtFromState)
-}
-},[jwtFromState])
-  useEffect(() => {
+useEffect(() => {
+  if (jwtFromState) {
+    const { exp } = jwtDecode(jwtFromState);
+    if (Date.now() >= exp * 1000) {
+      appwriteService.clearJWT();
+      dispatch(logout());
+      toast.error("Session expired, please log in again.");
+      navigate("/login");
+    } else {
+      appwriteService.setJWT(jwtFromState);
+    }
+  }
+}, [jwtFromState]);  useEffect(() => {
     if (slug) {
       appwriteService.getPost(slug).then((post) => {
         if (post) {

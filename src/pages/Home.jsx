@@ -5,6 +5,7 @@ import Container from "../components/container/Container";
 import PostForm from "../components/post-form/PostForm";
 import PostCard from "../components/PostCard";
 import About from "../components/About.jsx";
+import { jwtDecode } from "jwt-decode";
 import Services from '../components/Services'
 import store from '../store/store.js'
 import {useSelector} from 'react-redux'
@@ -16,12 +17,19 @@ function Home() {
   const logoutChk=useSelector((state)=>state.auth.status)
   const jwtFromState=useSelector((state)=>state.auth.jwt)
 
-  useEffect(()=>{
-  if(jwtFromState){
-  appwriteService.setJWT(jwtFromState)
+useEffect(() => {
+  if (jwtFromState) {
+    const { exp } = jwtDecode(jwtFromState);
+    if (Date.now() >= exp * 1000) {
+      appwriteService.clearJWT();
+      dispatch(logout());
+      toast.error("Session expired, please log in again.");
+      navigate("/login");
+    } else {
+      appwriteService.setJWT(jwtFromState);
+    }
   }
-  },[])
-  useEffect(() => {
+}, [jwtFromState]);  useEffect(() => {
     appwriteService.getPosts([]).then((posts) => {
       if (posts) {
         setPosts(posts.documents);

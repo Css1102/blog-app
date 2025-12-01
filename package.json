@@ -17,6 +17,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "html-react-parser": "^5.1.9",
+    "jwt-decode": "^4.0.0",
     "localforage": "^1.10.0",
     "lucide-react": "^0.552.0",
     "match-sorter": "^6.3.4",

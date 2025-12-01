@@ -4,6 +4,7 @@ import Button from "../Button";
 import Input from "../Input";
 import RTE from "../RTE";
 import Select from "../Select";
+import { jwtDecode } from "jwt-decode";
 import  appwriteService from "../../appwrite/ConfigDb.js";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -38,12 +39,19 @@ export default function PostForm({ post }) {
   setHovered(false)
   }
 
-  React.useEffect(()=>{
-  if(jwtFromState){
-  appwriteService.setJWT(jwtFromState)
+useEffect(() => {
+  if (jwtFromState) {
+    const { exp } = jwtDecode(jwtFromState);
+    if (Date.now() >= exp * 1000) {
+      appwriteService.clearJWT();
+      dispatch(logout());
+      toast.error("Session expired, please log in again.");
+      navigate("/login");
+    } else {
+      appwriteService.setJWT(jwtFromState);
+    }
   }
-  },[jwtFromState])
-  const submit = async (data) => {
+}, [jwtFromState]);  const submit = async (data) => {
     console.log(data);
     if (post) {
       const file = data.image[0]

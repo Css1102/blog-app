@@ -4,7 +4,7 @@ import appwriteService from '../appwrite/ConfigDb.js'
 import Container from "../components/container/Container";
 import PostForm from "../components/post-form/PostForm";
 import { useSelector } from "react-redux";
-
+import { jwtDecode } from "jwt-decode";
 
 function EditPosts() {
   const jwtFromState=useSelector((state)=>state.auth.jwt)
@@ -12,12 +12,19 @@ function EditPosts() {
   const {slug} = useParams();
   const navigate = useNavigate();
   console.log(slug);
-  useEffect(()=>{
-  if(jwtFromState){
-  appwriteService(jwtFromState)
+useEffect(() => {
+  if (jwtFromState) {
+    const { exp } = jwtDecode(jwtFromState);
+    if (Date.now() >= exp * 1000) {
+      appwriteService.clearJWT();
+      dispatch(logout());
+      toast.error("Session expired, please log in again.");
+      navigate("/login");
+    } else {
+      appwriteService.setJWT(jwtFromState);
+    }
   }
-  },[jwtFromState])
-  useEffect(() => {
+}, [jwtFromState]);  useEffect(() => {
     if (slug) {
       appwriteService.getPost(slug).then((post) => {
         if (post) {
