@@ -46,7 +46,7 @@ useEffect(() => {
       appwriteService.clearJWT();
       dispatch(logout());
       toast.error("Session expired, please log in again.");
-      navigate("/login");
+      Navigate("/login");
     } else {
       appwriteService.setJWT(jwtFromState);
     }

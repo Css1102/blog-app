@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import appwriteService from '../appwrite/ConfigDb.js'
 import Container from "../components/container/Container";
 import PostForm from "../components/post-form/PostForm";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch} from "react-redux";
 import { jwtDecode } from "jwt-decode";
 
 function EditPosts() {
@@ -11,6 +11,7 @@ function EditPosts() {
   const [post, setPost] = useState(null);
   const {slug} = useParams();
   const navigate = useNavigate();
+  const dispatch=useDispatch()
   console.log(slug);
 useEffect(() => {
   if (jwtFromState) {

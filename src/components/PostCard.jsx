@@ -92,74 +92,91 @@ useEffect(() => {
 }
 
 return (
-  <div className="bg-white rounded-xl shadow-md p-4 ml-4 mt-20 flex flex-col justify-between h-full transition-transform hover:scale-[1.02] hover:shadow-lg relative">
-    {/* Image */}
-    <Link to={`/posts/${$id}`}>
-    <div className="w-[400px] mx-2 h-52 overflow-auto rounded-md">
+<div className="bg-white rounded-xl shadow-md p-4 ml-0 sm:ml-4 mt-10 sm:mt-20 flex flex-col justify-between h-full transition-transform hover:scale-[1.02] hover:shadow-lg relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
+  {/* Image */}
+  <Link to={`/posts/${$id}`}>
+    <div className="w-full h-48 sm:h-52 md:h-60 overflow-hidden rounded-md">
       <img
         src={appwriteService.getFilePreview(featuredImage)}
         alt={title}
         className="w-full h-full object-cover"
       />
     </div>
-    </Link>
-    <button className='absolute 
-    top-1 right-2        
-    sm:top-2 sm:right-3  
-    md:top-3 md:right-4  
-    lg:top-0 lg:right-6
-    px-3 py-1
-    rounded-full
-    bg-gradient-to-r from-indigo-600 to-purple-600
-    text-white text-xs font-semibold
-    shadow-md
-    hover:shadow-lg hover:scale-105
-    transition-all duration-200 ease-in-out2'>
+  </Link>
+
+  {/* Tag Button */}
+  <button
+    className="absolute 
+      top-2 right-2        
+      sm:top-3 sm:right-3  
+      md:top-3 md:right-4  
+      lg:top-2 lg:right-6
+      px-3 py-1
+      rounded-full
+      bg-gradient-to-r from-indigo-600 to-purple-600
+      text-white text-xs font-semibold
+      shadow-md
+      hover:shadow-lg hover:scale-105
+      transition-all duration-200 ease-in-out"
+  >
     {tag}
-    </button>
+  </button>
 
-    <div className='relative'>
-    <p className="text-sm text-slate-600 mt-3">{Author}</p>
-
-     <div ref={menuRef}>
-    {Author.replace(" ","").toLowerCase()===userName.replace(" ","").toLowerCase() && <div className="z-50" onClick={()=>handlesetThreedotclick()}>
-    <MoreHorizontal className="absolute right-2 top-3 text-slate-700"/>
-    </div>}
-       {threedotClick && (
-          <ul className="absolute top-0 right-0 w-32 rounded-lg shadow-lg bg-zinc-100 border border-slate-300 z-[100]">
-            <Link to={`/editposts/${$id}`}>
-            <li
-              className="px-4 py-2 text-slate-700 hover:bg-yellow-500 hover:text-white cursor-pointer transition-colors"
-            >
+  {/* Author + Menu */}
+  <div className="relative mt-3">
+    <p className="text-sm text-slate-600">{Author}</p>
+    <div ref={menuRef}>
+      {Author.replace(" ", "").toLowerCase() ===
+        userName.replace(" ", "").toLowerCase() && (
+        <div className="z-50" onClick={() => handlesetThreedotclick()}>
+          <MoreHorizontal className="absolute right-2 top-3 text-slate-700" />
+        </div>
+      )}
+      {threedotClick && (
+        <ul className="absolute top-0 right-0 w-32 rounded-lg shadow-lg bg-zinc-100 border border-slate-300 z-[100]">
+          <Link to={`/editposts/${$id}`}>
+            <li className="px-4 py-2 text-slate-700 hover:bg-yellow-500 hover:text-white cursor-pointer transition-colors">
               Update
             </li>
-            </Link>
-            <li
-              className="px-4 py-2 text-slate-700 hover:bg-red-500 hover:text-white cursor-pointer transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                console.log("Delete clicked");
-                handleDelete();
-              }}
-            >
-              Delete
-            </li>
-          </ul>
-        )}
+          </Link>
+          <li
+            className="px-4 py-2 text-slate-700 hover:bg-red-500 hover:text-white cursor-pointer transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete();
+            }}
+          >
+            Delete
+          </li>
+        </ul>
+      )}
     </div>
+  </div>
 
-    </div>
-        <Link to={`/posts/${$id}`}>
-    <h2 className="text-lg font-semibold text-slate-900 mt-2 line-clamp-2">{title}</h2>
-    <div className="flex items-center justify-between text-sm text-slate-500 mt-4">
-      <p>{getDate(Publish_Date?.substring(3, 5)) + " " + Publish_Date?.substring(0, 2) + ", " + Publish_Date?.substring(6)}</p>
+  {/* Title + Date + Upvotes */}
+  <Link to={`/posts/${$id}`}>
+    <h2 className="text-base sm:text-lg font-semibold text-slate-900 mt-2 line-clamp-2">
+      {title}
+    </h2>
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-slate-500 mt-4 gap-2">
+      <p>
+        {getDate(Publish_Date?.substring(3, 5)) +
+          " " +
+          Publish_Date?.substring(0, 2) +
+          ", " +
+          Publish_Date?.substring(6)}
+      </p>
       <div className="flex items-center gap-2">
-       <ArrowBigUp className={`${userHasUpvoted?'text-orange-600':'text-slate-700}'}`}/>
+        <ArrowBigUp
+          className={`${
+            userHasUpvoted ? "text-orange-600" : "text-slate-700"
+          }`}
+        />
         <p>{Upvotes}</p>
       </div>
     </div>
-    </Link>
-  </div>
+  </Link>
+</div>
   )}
 
 

@@ -4,17 +4,20 @@ import appwriteService from '../appwrite/ConfigDb.js'
 import {jwtDecode} from "jwt-decode";
 import Container from "../components/container/Container";
 import PostForm from "../components/post-form/PostForm";
+import { toast } from 'react-hot-toast';
 import PostPage from "../components/PostPage";
 import Pagination from "../components/Pagination";
 import SearchBar from '../components/SearchBar'
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { Query } from "appwrite";
 import { FilterIcon } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import { ListRestart } from 'lucide-react';
-
+import { logout } from "../store/authSlice.js";
 function AllPosts() {
   const [posts, setPosts] = useState([]);
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
   const[reset,setReset]=useState(false)
   const [filteredPosts, setFilteredPosts] = useState([]);
   const tagList=["Trading", "ETF", "Mutual Funds", "IPO", "Stocks", "Business","Personal Finance"]
@@ -47,7 +50,8 @@ useEffect(() => {
       appwriteService.setJWT(jwtFromState);
     }
   }
-}, [jwtFromState]);async function getPostdata() {
+}, [jwtFromState]);
+async function getPostdata() {
   try {
     setLoading(true);
     const posts = await appwriteService.getPosts(userId);
@@ -239,28 +243,132 @@ let source;
   setPostsOnpage(source.slice(start, end));
 }, [pageno, posts, filteredPosts,searchBarEmpty]);
 return (
-<div className="relative min-h-screen flex flex-col overflow-auto"> {loading ? 
-( <div className="flex justify-center items-center h-full"> 
-<div className="text-lg font-medium text-slate-700">Loading posts...</div> 
-</div> ) :
- ( <> <div>
-   <div className='flex mt-32 justify-between gap-4 items-center'> 
-    <div className="relative lg:left-64" ref={filterRef}>
-       <button onClick={handleDropdown}
-        className="w-32 h-12 rounded-full bg-white text-black flex justify-evenly items-center px-3 py-1 shadow-md" > 
-        <FilterIcon className={`w-4 h-4 ${activeFilter!==null && !reset?"fill-black":""}`} /> 
-        <span>Filter by</span> </button> 
-        {dropdownOpen && ( <ul className="absolute top-full left-0 mt-2 w-40 rounded-lg shadow-lg bg-white z-10"> 
-          <li onClick={()=>filterByUpvotes()} className={`px-3 py-2 border-b border-slate-300 cursor-pointer
-            ${activeFilter==="upvotes"? "bg-indigo-100 font-semibold":"hover:bg-slate-100"}`}> Upvotes </li>
-             <li onClick={filterByLatest} className={`px-3 py-2 border-b border-slate-300 cursor-pointer ${activeFilter==="latest"? "bg-indigo-100 font-semibold":"hover:bg-slate-100"}`}> Latest </li> <li className="relative px-3 py-2 hover:bg-slate-100 cursor-pointer flex items-center justify-between"> <span className='ml-12'>Tags</span> <ChevronRight onClick={handleTagOpen} className={`tag-toggle w-4 h-4 cursor-pointer ${tagListOpen?"rotate-90":""}`} /> {tagListOpen && ( <div ref={tagRef}> <ul className="absolute top-0 left-full ml-2 w-32 rounded-lg shadow-lg bg-white z-50"> {tagList.map((tag, idx) => ( <li key={idx} onClick={()=>filterByTagName(tag)} className={`px-3 py-2 border-b border-slate-300 ${ activeFilter === `tag-${tag}` ? "bg-indigo-100 font-semibold" : "hover:bg-slate-100"} cursor-pointer`} > {tag} </li> ))} </ul> </div> )} </li> <li onClick={handleReset} className={`relative px-3 py-2 ${reset && activeFilter===null?"bg-indigo-100 font-semibold":"hover:bg-slate-100"} cursor-pointer flex items-center justify-around`}> <ListRestart className="w-4 h-4"/> <span className="mr-10">Reset</span> </li> </ul> )} </div> <SearchBar onSearch={handleSearch}/> </div> <div className="pt-32 pb-20 min-h-[300px]" ref={bottomRef}> {postsOnpage.length > 0 ? ( <PostPage limitposts={postsOnpage} /> ) : ( <div className="text-center text-slate-500 text-lg font-medium py-10"> {activeFilter || !searchBarEmpty ? "No posts found for your selection." : "No posts available yet. Start by creating your first post!"} </div> )} </div> </div> </> )} {/* Always show pagination */}
- {!loading && postsOnpage.length>0 && 
- <div className="my-8 flex justify-center"> 
- <Pagination postsOnpage={postsOnpage} 
- postsTotal={filteredPosts? filteredPosts.length:posts.length} 
- postperpg={postperpg} handlePageNoDec={handlePageNoDec} 
- handlePageNoInc={handlePageNoInc} pageno={pageno} /> </div>} 
- \</div> );
+<div className="relative min-h-screen flex flex-col overflow-auto">
+  {loading ? (
+    <div className="flex justify-center items-center h-full">
+      <div className="text-lg font-medium text-slate-700">Loading posts...</div>
+    </div>
+  ) : (
+    <>
+      <div>
+<div className="flex mt-32 gap-4 items-center px-4 flex-wrap lg:flex-nowrap">
+  <div className="relative md:left-64" ref={filterRef}>
+    <button
+      onClick={handleDropdown}
+      className="w-32 h-12 rounded-full bg-white text-black flex justify-evenly items-center px-3 py-1 shadow-md"
+    >
+      <FilterIcon
+        className={`w-4 h-4 ${activeFilter !== null && !reset ? "fill-black" : ""}`}
+      />
+      <span>Filter by</span>
+    </button>
+            {dropdownOpen && (
+              <ul className="absolute top-full left-0 mt-2 w-40 rounded-lg shadow-lg bg-white z-10">
+                <li
+                  onClick={() => filterByUpvotes()}
+                  className={`px-3 py-2 border-b border-slate-300 cursor-pointer ${
+                    activeFilter === "upvotes"
+                      ? "bg-indigo-100 font-semibold"
+                      : "hover:bg-slate-100"
+                  }`}
+                >
+                  Upvotes
+                </li>
+                <li
+                  onClick={filterByLatest}
+                  className={`px-3 py-2 border-b border-slate-300 cursor-pointer ${
+                    activeFilter === "latest"
+                      ? "bg-indigo-100 font-semibold"
+                      : "hover:bg-slate-100"
+                  }`}
+                >
+                  Latest
+                </li>
+
+                {/* Tags Dropdown */}
+                <li className="relative px-3 py-2 hover:bg-slate-100 cursor-pointer flex items-center justify-between">
+                  <span className="ml-12">Tags</span>
+                  <ChevronRight
+                    onClick={handleTagOpen}
+                    className={`tag-toggle w-4 h-4 cursor-pointer ${
+                      tagListOpen ? "rotate-90" : ""
+                    }`}
+                  />
+                  {tagListOpen && (
+                    <div ref={tagRef}>
+                      <ul className="absolute top-0 left-full ml-2 w-32 rounded-lg shadow-lg bg-white z-50">
+                        {tagList.map((tag, idx) => (
+                          <li
+                            key={idx}
+                            onClick={() => filterByTagName(tag)}
+                            className={`px-3 py-2 border-b border-slate-300 ${
+                              activeFilter === `tag-${tag}`
+                                ? "bg-indigo-100 font-semibold"
+                                : "hover:bg-slate-100"
+                            } cursor-pointer`}
+                          >
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </li>
+
+                {/* Reset */}
+                <li
+                  onClick={handleReset}
+                  className={`relative px-3 py-2 ${
+                    reset && activeFilter === null
+                      ? "bg-indigo-100 font-semibold"
+                      : "hover:bg-slate-100"
+                  } cursor-pointer flex items-center justify-around`}
+                >
+                  <ListRestart className="w-4 h-4" />
+                  <span className="mr-10">Reset</span>
+                </li>
+              </ul>
+            )}  </div>
+
+  {/* Search Bar */}
+  <div className="flex-1 min-w-[200px]">
+    <SearchBar onSearch={handleSearch} />
+  </div>
+</div>       
+
+        <div
+          className="pt-32 pb-20 min-h-[300px] px-4 max-sm:pt-20"
+          ref={bottomRef}
+        >
+          {postsOnpage.length > 0 ? (
+            <PostPage limitposts={postsOnpage} />
+          ) : (
+            <div className="text-center text-slate-500 text-lg font-medium py-10">
+              {activeFilter || !searchBarEmpty
+                ? "No posts found for your selection."
+                : "No posts available yet. Start by creating your first post!"}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  )}
+
+  {/* Pagination */}
+  {!loading && postsOnpage.length > 0 && (
+    <div className="my-8 flex justify-center px-4">
+      <Pagination
+        postsOnpage={postsOnpage}
+        postsTotal={filteredPosts ? filteredPosts.length : posts.length}
+        postperpg={postperpg}
+        handlePageNoDec={handlePageNoDec}
+        handlePageNoInc={handlePageNoInc}
+        pageno={pageno}
+      />
+    </div>
+  )}
+</div>
+);
 
 }
 

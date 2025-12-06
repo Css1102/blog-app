@@ -8,7 +8,7 @@ import About from "../components/About.jsx";
 import { jwtDecode } from "jwt-decode";
 import Services from '../components/Services'
 import store from '../store/store.js'
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
 import cricimg from '../assets/cricimg.svg'
 import axios from 'axios'
 import iccimg from '../assets/png-transparent-women-s-cricket-world-cup-icc-test-championship-international-cricket-council-united-states-national-cricket-team-world-cup-blue-sport-logo-thumbnail.png'
@@ -16,7 +16,8 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const logoutChk=useSelector((state)=>state.auth.status)
   const jwtFromState=useSelector((state)=>state.auth.jwt)
-
+const navigate=useNavigate()
+const dispatch=useDispatch()
 useEffect(() => {
   if (jwtFromState) {
     const { exp } = jwtDecode(jwtFromState);
