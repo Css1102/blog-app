@@ -81,7 +81,7 @@ useEffect(() => {
         const attachedTag=await classifyTag(data?.content)
         const dbPost = await appwriteService.createPost({
           ...data,
-          attachedTag,
+          attachedTag:attachedTag,
           userId: userId
         });
         // const reduceObj={id:post.$id,likes:Math.floor(Math.random()*100)+50}

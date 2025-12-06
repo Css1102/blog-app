@@ -68,7 +68,7 @@ export class Service {
       conf.appwriteDatabaseId,
       conf.appwriteCollection_two_Id,
       ID.unique(),
-      { title, content, featuredImage, status, userId, Author, Publish_Date, attachedTag }
+      { title, content, featuredImage, status, userId, Author, Publish_Date, tag:attachedTag }
     );
   }
 
