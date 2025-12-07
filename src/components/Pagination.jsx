@@ -14,7 +14,7 @@ function Pagination({postsOnpage,postsTotal,postperpg,handlePageNoDec,handlePage
   <button
     onClick={handlePageNoInc}
     className={`w-[80px] h-[40px] rounded-sm text-white px-3 py-1.5 ${
-      postsOnpage.length === postperpg && postsTotal % postperpg !== 0
+      postsOnpage.length ===postperpg && postsTotal % postperpg === 0
         ? 'bg-slate-900'
         : 'bg-slate-400'
     }`}

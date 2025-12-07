@@ -178,7 +178,7 @@ const handleReset=()=>{
  
 }
   const handlePageNoInc=()=>{
-  if(pageno<=total_page && posts.length>=postperpg && postsOnpage.length===postperpg){
+  if(pageno<=total_page && posts.length>postperpg && postsOnpage.length>=postperpg){
     setPageno(pageno+1)
   }
   }
