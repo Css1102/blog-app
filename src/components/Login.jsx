@@ -4,6 +4,7 @@ import Button from "./Button";
 import React, { useState } from "react";
 import Input from "./Input";
 import Logo from "./Logo";
+import googleIcon from '../assets/icons8-google-logo-48.png'
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../store/authSlice";
@@ -31,6 +32,10 @@ export default function Login() {
       setError(error.message);
     }
   };
+
+  const handleGoogleLogin=async()=>{
+await AuthServiceObj.googleLogin();
+  }
   return (
     <div className="flex items-center justify-center w-full h-1/3">
       <div
@@ -75,6 +80,10 @@ export default function Login() {
             <Button type="submit" disabled={false} className="w-full">
               Sign in{" "}
             </Button>
+           {/* <button onClick={handleGoogleLogin} className="w-full h-[45px] flex justify-around bg-white text black items-center">
+           <img className="h-[30px] w-[30px] ml-24 rounded-full" src={googleIcon}></img>
+           <span className='mr-24'>Sign in with Google</span>
+           </button> */}
           </div>
         </form>
       </div>

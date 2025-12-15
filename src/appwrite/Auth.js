@@ -1,5 +1,5 @@
 import conf from "../conf/conf.js";
-import { Client, Account, ID, Databases,Permission, Role,Query} from "appwrite";
+import { Client, Account, ID, Databases,Permission, Role,Query,OAuthProvider} from "appwrite";
 import crypto from "crypto";
 export class AuthService {
   client = new Client();
@@ -71,7 +71,50 @@ if (userAccount) {
       throw error;
     }
   }
-  async getCurrentUser() {
+// async googleLogin(){
+//   try{
+//     const googleSession = await this.account.createOAuth2Session({
+//       provider:OAuthProvider.Google,
+//       scopes: ['repo', 'user'] 
+//     });
+//   }
+//   catch(err){
+//   }
+// }
+async googleLogin() {
+  try {
+await this.account.createOAuth2Session("google");
+  } catch (err) {
+    console.error(err);
+  }
+}
+async validateGoogleUser() {
+  try {
+    const account = await this.account.get();
+    const userDocs = await this.databases.listDocuments(
+      conf.appwriteDatabaseId,
+      conf.appwriteCollection_one_Id,
+      [Query.equal("userId", account.$id)]
+    );
+
+    if (userDocs.total === 0) {
+      await this.account.deleteSessions();
+
+      throw new Error("You must sign up before using Google login.");
+    }
+        const jwt = await this.createJWT();
+
+    return {
+      user: userDocs.documents[0],
+      jwt
+    };
+
+  } catch (err) {
+    console.error("Google login validation failed:", err);
+    throw err;
+  }
+}
+async getCurrentUser() {
   try {
       const session = await this.account.getSession("current");
     if (!session) return null;

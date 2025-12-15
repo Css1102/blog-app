@@ -3,6 +3,7 @@ import React from 'react'
 function Pagination({postsOnpage,postsTotal,postperpg,handlePageNoDec,handlePageNoInc,pageno}) {
   return (
 <div className="flex gap-4 mt-10">
+  {console.log(postsTotal)}
   <button
     onClick={handlePageNoDec}
     className={`w-[80px] h-[40px] rounded-sm text-white px-3 py-1.5 ${
@@ -14,7 +15,7 @@ function Pagination({postsOnpage,postsTotal,postperpg,handlePageNoDec,handlePage
   <button
     onClick={handlePageNoInc}
     className={`w-[80px] h-[40px] rounded-sm text-white px-3 py-1.5 ${
-      postsOnpage.length ===postperpg && postsTotal % postperpg === 0
+      postsTotal>postperpg && postsOnpage.length>=postperpg
         ? 'bg-slate-900'
         : 'bg-slate-400'
     }`}

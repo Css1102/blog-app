@@ -10,6 +10,7 @@ import Login from './pages/Login.jsx'
 import Protected from './components/Protected.jsx'
 import SignUp from './pages/SignUp.jsx'
 import AddPost from './pages/AddPost.jsx'
+import GoogleLogin from './components/GoogleLogin.jsx'
 import EditPosts from './pages/EditPosts.jsx'
 import Post from './pages/Post.jsx'
 import { lazy,Suspense } from 'react'
@@ -31,6 +32,7 @@ element:(
 </Protected>
 )
 },
+
 {
   path:'/signup',
   element:(

@@ -56,8 +56,8 @@ async function getPostdata() {
     setLoading(true);
     const posts = await appwriteService.getPosts(userId);
     if (posts) {
+      console.log(posts)
       setPosts(posts.documents);
-      console.log("User posts:", posts.documents);
 
       if (pageno === 1) {
         setPostsOnpage(posts.documents.slice(0, postperpg));
@@ -359,7 +359,7 @@ return (
     <div className="my-8 flex justify-center px-4">
       <Pagination
         postsOnpage={postsOnpage}
-        postsTotal={filteredPosts ? filteredPosts.length : posts.length}
+        postsTotal={filteredPosts.length > 0 ? filteredPosts.length : posts.length}
         postperpg={postperpg}
         handlePageNoDec={handlePageNoDec}
         handlePageNoInc={handlePageNoInc}
