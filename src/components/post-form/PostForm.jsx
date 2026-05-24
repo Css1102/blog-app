@@ -4,7 +4,6 @@ import Button from "../Button";
 import Input from "../Input";
 import RTE from "../RTE";
 import Select from "../Select";
-import { jwtDecode } from "jwt-decode";
 import  appwriteService from "../../appwrite/ConfigDb.js";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +26,6 @@ export default function PostForm({ post }) {
   const isPost=post?true:false;
 
   const userData = useSelector((state) => state.auth.userData);
-  const jwtFromState=useSelector((state)=>state.auth.jwt)
   const userId=userData.$id===undefined ? userData.userData.$id:userData.$id;
   const[canPost,setCanPost]=useState(false)
   const[canPostStatus,setCanPostStatus]=useState(false)
@@ -39,19 +37,20 @@ export default function PostForm({ post }) {
   setHovered(false)
   }
 
-useEffect(() => {
-  if (jwtFromState) {
-    const { exp } = jwtDecode(jwtFromState);
-    if (Date.now() >= exp * 1000) {
-      appwriteService.clearJWT();
-      dispatch(logout());
-      toast.error("Session expired, please log in again.");
-      Navigate("/login");
-    } else {
-      appwriteService.setJWT(jwtFromState);
-    }
-  }
-}, [jwtFromState]);  const submit = async (data) => {
+// useEffect(() => {
+//   if (jwtFromState) {
+//     const { exp } = jwtDecode(jwtFromState);
+//     if (Date.now() >= exp * 1000) {
+//       appwriteService.clearJWT();
+//       dispatch(logout());
+//       toast.error("Session expired, please log in again.");
+//       Navigate("/login");
+//     } else {
+//       appwriteService.setJWT(jwtFromState);
+//     }
+//   }
+// }, [jwtFromState]);  
+const submit = async (data) => {
     console.log(data);
     if (post) {
       const file = data.image[0]
