@@ -80,10 +80,10 @@ await AuthServiceObj.googleLogin();
             <Button type="submit" disabled={false} className="w-full">
               Sign in{" "}
             </Button>
-           {/* <button onClick={handleGoogleLogin} className="w-full h-[45px] flex justify-around bg-white text black items-center">
+           <button onClick={handleGoogleLogin} className="w-full h-[45px] flex justify-around bg-white text black items-center">
            <img className="h-[30px] w-[30px] ml-24 rounded-full" src={googleIcon}></img>
            <span className='mr-24'>Sign in with Google</span>
-           </button> */}
+           </button>
           </div>
         </form>
       </div>

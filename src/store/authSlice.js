@@ -15,7 +15,6 @@ const initialState={
     status:false,
     userData:null,
     UpvotedObj:null,
-    jwt:null,
 }
 
 const authSlice=createSlice({
@@ -35,11 +34,7 @@ upvoted:(state,action)=>{
 console.log(action.payload)
 state.UpvotedObj=action.payload
 },
-setJwt:(state,action)=>{
-console.log(action.payload)
-state.jwt=action.payload;
-}
 }
 })
 export default authSlice.reducer
-export const{ login,logout,upvoted,setAuth,setJwt }=authSlice.actions
+export const{ login,logout,upvoted}=authSlice.actions

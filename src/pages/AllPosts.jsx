@@ -32,25 +32,10 @@ function AllPosts() {
   const tagRef=useRef(null);
      const userData = useSelector((state) => state.auth.userData);
      const userId=userData.$id===undefined ? userData.userData.$id:userData.$id;
-     const jwtFromState=useSelector((state)=>state.auth.jwt)
    const[searchBarEmpty,setSearchBarEmpty]=useState(true)
    const bottomRef=useRef(null)
 const postperpg=9;
 const[postsOnpage,setPostsOnpage]=useState([])
-
-useEffect(() => {
-  if (jwtFromState) {
-    const { exp } = jwtDecode(jwtFromState);
-    if (Date.now() >= exp * 1000) {
-      appwriteService.clearJWT();
-      dispatch(logout());
-      toast.error("Session expired, please log in again.");
-      navigate("/login");
-    } else {
-      appwriteService.setJWT(jwtFromState);
-    }
-  }
-}, [jwtFromState]);
 async function getPostdata() {
   try {
     setLoading(true);
@@ -180,13 +165,16 @@ const handleReset=()=>{
   const handlePageNoInc=()=>{
   if(pageno<=total_page && posts.length>postperpg && postsOnpage.length>=postperpg){
     setPageno(pageno+1)
+         window.scrollBy(0,-window.innerHeight)
   }
+           window.scrollBy(0,-window.innerHeight)
   }
   const handlePageNoDec=()=>{
     if(pageno>1){
       setPageno(pageno-1)
     }
-    }
+   window.scrollBy(0,-window.innerHeight+50)
+  }
   //  function filterByUpvotes(){
   // const filteredPosts=
   //  }

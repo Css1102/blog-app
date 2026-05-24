@@ -15,22 +15,7 @@ import iccimg from '../assets/png-transparent-women-s-cricket-world-cup-icc-test
 function Home() {
   const [posts, setPosts] = useState([]);
   const logoutChk=useSelector((state)=>state.auth.status)
-  const jwtFromState=useSelector((state)=>state.auth.jwt)
-const navigate=useNavigate()
-const dispatch=useDispatch()
-useEffect(() => {
-  if (jwtFromState) {
-    const { exp } = jwtDecode(jwtFromState);
-    if (Date.now() >= exp * 1000) {
-      appwriteService.clearJWT();
-      dispatch(logout());
-      toast.error("Session expired, please log in again.");
-      navigate("/login");
-    } else {
-      appwriteService.setJWT(jwtFromState);
-    }
-  }
-}, [jwtFromState]);  useEffect(() => {
+  useEffect(() => {
     appwriteService.getPosts([]).then((posts) => {
       if (posts) {
         setPosts(posts.documents);

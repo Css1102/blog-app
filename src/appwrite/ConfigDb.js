@@ -15,98 +15,61 @@ export class Service {
     this.bucket = new Storage(this.client);
   }
 
-  setJWT(jwt) {
-    if (jwt) {
-      console.log("verifying jwt");
-      this.client.setJWT(jwt);
-      this.databases = new Databases(this.client);
-      this.bucket = new Storage(this.client);
-    }
-  }
-
-  clearJWT() {
-    this.client.setJWT(null);
-    this.databases = new Databases(this.client);
-    this.bucket = new Storage(this.client);
-  }
-
-  async safeCall(fn, ...args) {
-    try {
-      return await fn(...args);
-    } catch (error) {
-      if (error.code === 401) {
-        this.clearJWT();
-        toast.error("Session expired. Please log in again.");
-        window.location.href = "/login";
-      }
-      console.error("Appwrite error:", error);
-      throw error;
-    }
-  }
-
   async getPost(slug) {
-    return this.safeCall(
-      this.databases.getDocument.bind(this.databases),
+    return this.databases.getDocument.bind(this.databases),
       conf.appwriteDatabaseId,
       conf.appwriteCollection_two_Id,
       slug
-    );
   }
 
   async getPosts(userId, queries = [Query.equal("status", "active")]) {
-    return this.safeCall(
-      this.databases.listDocuments.bind(this.databases),
+    return this.databases.listDocuments.bind(this.databases),
       conf.appwriteDatabaseId,
       conf.appwriteCollection_two_Id,
       queries
-    );
+    
   }
 
   async createPost({ title, slug, content, featuredImage, attachedTag, status, userId, Author, Publish_Date }) {
-    return this.safeCall(
-      this.databases.createDocument.bind(this.databases),
+    return this.databases.createDocument.bind(this.databases),
       conf.appwriteDatabaseId,
       conf.appwriteCollection_two_Id,
       ID.unique(),
       { title, content, featuredImage, status, userId, Author, Publish_Date, tag:attachedTag }
-    );
+    
   }
 
   async updatePosts(slug, { title, featuredImage, content, attachedTag, status, Author, Publish_Date }) {
-    return this.safeCall(
-      this.databases.updateDocument.bind(this.databases),
+    return this.databases.updateDocument.bind(this.databases),
       conf.appwriteDatabaseId,
       conf.appwriteCollection_two_Id,
       slug,
       { title, featuredImage, content, status, Author, Publish_Date, tag: attachedTag }
-    );
+    
   }
 
   async deletePost(slug) {
-    return this.safeCall(
-      this.databases.deleteDocument.bind(this.databases),
+    return this.databases.deleteDocument.bind(this.databases),
       conf.appwriteDatabaseId,
       conf.appwriteCollection_two_Id,
       slug
-    );
+    
   }
 
   // storage service
   async uploadFile(File) {
-    return this.safeCall(
-      this.bucket.createFile.bind(this.bucket),
+    return this.bucket.createFile.bind(this.bucket),
       conf.appwriteBucketId,
       ID.unique(),
       File
-    );
+    
   }
 
   async deleteFile(FileId) {
-    return this.safeCall(
-      this.bucket.deleteFile.bind(this.bucket),
+    return this.bucket.deleteFile.bind(this.bucket),
       conf.appwriteBucketId,
       FileId
-    );
+    
   }
 
   getFilePreview(FileId) {
