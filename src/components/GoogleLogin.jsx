@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import AuthServiceObj from "../appwrite/Auth";
-import { login as authLogin, setJwt } from "../store/authSlice";
+import { login as authLogin } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 const GoogleLogin = () => {
 
@@ -14,9 +14,7 @@ const GoogleLogin = () => {
     async function verify() {
       try {
         const result = await AuthServiceObj.validateGoogleUser();
-
         dispatch(authLogin(result.user));
-        dispatch(setJwt(result.jwt));
 
         navigate("/allposts");
       } catch (err) {

@@ -8,7 +8,6 @@ import googleIcon from '../assets/icons8-google-logo-48.png'
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../store/authSlice";
-import { setJwt } from "../store/authSlice";
 export default function Login() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -20,11 +19,9 @@ export default function Login() {
       const response = await AuthServiceObj.loginAccount(data);
       if (response?.session) {
         const userData = await response?.user
-        const jwtToken=response?.jwt
         console.log(userData)
         if (userData) {
           dispatch(authLogin(userData));
-          dispatch(setJwt(jwtToken))
           navigate("/allposts")
         }
       }
