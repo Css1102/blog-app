@@ -12,15 +12,7 @@ export class AuthService {
     this.databases=new Databases(this.client)
   }
 
-  async createJWT() {
-  try {
-    const jwt = await this.account.createJWT();
-    return jwt.jwt; 
-  } catch (error) {
-    console.error("JWT creation failed:", error);
-    throw error;
-  }
-}
+
   async createAccount({ email, password, name }) {
     try {
       const userAccount = await this.account.create(
@@ -61,11 +53,9 @@ if (userAccount) {
       throw new Error("User not found in database");
 
     }  
-          const jwt = await this.createJWT();
       return {
       session,
       user: userDocs.documents[0],
-      jwt
     };
   }catch (error) {
       throw error;
@@ -102,11 +92,9 @@ async validateGoogleUser() {
 
       throw new Error("You must sign up before using Google login.");
     }
-        const jwt = await this.createJWT();
 
     return {
       user: userDocs.documents[0],
-      jwt
     };
 
   } catch (err) {
@@ -116,15 +104,26 @@ async validateGoogleUser() {
 }
 async getCurrentUser() {
   try {
-      const session = await this.account.getSession("current");
+    const session = await this.account.getSession("current");
     if (!session) return null;
+    const SESSION_LIMIT_MINUTES = 7;
+    const sessionAge = Date.now() - new Date(session.$createdAt).getTime();
+    const limitMs = SESSION_LIMIT_MINUTES * 60 * 1000;
+
+    if (sessionAge > limitMs) {
+      await this.account.deleteSession("current"); // force logout
+      return null;
+    }
+
     const account = await this.account.get();
-    console.log(account)
-    const userDocs = await this.databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteCollection_one_Id, [
-      Query.equal("userId", account.$id),
-    ]);
+    const userDocs = await this.databases.listDocuments(
+      conf.appwriteDatabaseId,
+      conf.appwriteCollection_one_Id,
+      [Query.equal("userId", account.$id)]
+    );
+
     if (userDocs.total === 0) return null;
-    return userDocs.documents[0]; 
+    return userDocs.documents[0];
   } catch (err) {
     console.error("Session restore failed:", err);
     return null;
