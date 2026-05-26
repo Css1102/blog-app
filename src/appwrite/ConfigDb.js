@@ -29,26 +29,31 @@ export class Service {
     }
   }
 
-  async getPosts(queries = [Query.equal("status", "active")]) {
-    try {
-      return await this.databases.listDocuments(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollection_two_Id,
-        queries
-      );
-    } catch (error) {
-      console.log("Appwrite error :: getPosts", error);
-      return false;
-    }
-  }
+async getPosts(userId = null) {
+  try {
+    const queries = [Query.equal("status", "active")];
 
-  // ✅ Bug 1 fixed: actually calls createDocument with await
+    if (userId) {
+      queries.push(Query.equal("userId", userId));
+    }
+
+    return await this.databases.listDocuments(
+      conf.appwriteDatabaseId,
+      conf.appwriteCollection_two_Id,
+      queries
+    );
+  } catch (error) {
+    console.log("Appwrite error :: getPosts", error);
+    return false;
+  }
+}
+
   async createPost({ title, slug, content, featuredImage, attachedTag, status, userId, Author, Publish_Date }) {
     try {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollection_two_Id,
-        slug || ID.unique(),   // use slug as document ID so you can query by it later
+        slug || ID.unique(),   
         { title, content, featuredImage, status, userId, Author, Publish_Date, tag: attachedTag },
         [
           Permission.read(Role.any()),             // anyone can read posts
