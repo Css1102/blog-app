@@ -32,11 +32,6 @@ export class Service {
 async getPosts(userId = null) {
   try {
     const queries = [Query.equal("status", "active")];
-
-    if (userId) {
-      queries.push(Query.equal("userId", userId));
-    }
-
     return await this.databases.listDocuments(
       conf.appwriteDatabaseId,
       conf.appwriteCollection_two_Id,
@@ -56,9 +51,9 @@ async getPosts(userId = null) {
         slug || ID.unique(),   
         { title, content, featuredImage, status, userId, Author, Publish_Date, tag: attachedTag },
         [
-          Permission.read(Role.any()),             // anyone can read posts
-          Permission.update(Role.user(userId)),    // only the author can edit
-          Permission.delete(Role.user(userId)),    // only the author can delete
+          Permission.read(Role.any()),            
+          Permission.update(Role.user(userId)),    
+          Permission.delete(Role.user(userId)),    
         ]
       );
     } catch (error) {
